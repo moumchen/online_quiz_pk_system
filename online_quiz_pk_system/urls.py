@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    # the home page
+    path('', RedirectView.as_view(url='/common/index'), name='home_page'),
+
+    # include all urls of admin
     path('admin/', admin.site.urls),
 
     # include all urls of the multiplayer module urls
