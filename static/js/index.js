@@ -1,1 +1,0 @@
-alert('Welcome to Quiz Quiz! Launching soon')
