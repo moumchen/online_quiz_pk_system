@@ -1,0 +1,29 @@
+body {
+            margin: 0;
+            padding: 0;
+            background-color: #87CEEB; /* 天蓝色背景 */
+            font-family: sans-serif;
+            display: flex; /* 使用 Flexbox 布局 body */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            min-height: 100vh; /* 确保 body 至少占据整个视口高度 */
+            text-align: center; /* 文本居中 */
+            color: #333; /* 文字颜色 */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column; /* 垂直排列 Logo 和文字 */
+            align-items: center; /* 容器内元素水平居中 */
+        }
+
+        .logo-image {
+            max-width: 50%; /* Logo 图片最大宽度，根据需要调整 */
+            height: auto;
+            margin-bottom: 20px; /* Logo 和文字之间的间距 */
+        }
+
+        .construction-text {
+            font-size: 1.5em; /* "Under Construction..." 文字大小 */
+            font-weight: bold; /* 文字加粗 */
+        }
