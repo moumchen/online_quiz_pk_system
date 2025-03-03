@@ -2,7 +2,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #87CEEB; /* 天蓝色背景 */
-    font-family: sans-serif;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-style: normal;
     display: flex; /* 使用 Flexbox 布局 body */
     justify-content: center; /* 水平居中 */
     align-items: center; /* 垂直居中 */
@@ -11,10 +12,11 @@ body {
     color: #333; /* 文字颜色 */
 }
 
-.container {
+.logo-container {
     display: flex;
-    flex-direction: column; /* 垂直排列 Logo 和文字 */
-    align-items: center; /* 容器内元素水平居中 */
+    position: absolute;
+    left: 10px;
+    top: 10px;
 }
 
 .logo-image {
@@ -23,7 +25,46 @@ body {
     margin-bottom: 20px; /* Logo 和文字之间的间距 */
 }
 
-.construction-text {
-    font-size: 1.5em; /* "Under Construction..." 文字大小 */
-    font-weight: bold; /* 文字加粗 */
+.login-info {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.my-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 20px;
+    color: #666;
+    text-align: center;
+    font-weight: bold;
+}
+
+.footer-imgs {
+    display: flex; /* 使用 Flexbox 水平排列图片 */
+    justify-content: center; /* 水平居中图片 */
+ }
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;          /* 启用 Flexbox 布局 */
+    flex-direction: column; /* 设置主轴方向为垂直，使项目上下排列 */
+    align-items: center;    /* 可选：让按钮在水平方向居中对齐 (在 .buttons 容器内) */
+    /* justify-content: center;  如果你想在垂直方向上也在 .buttons 容器内居中按钮组，可以添加这个 */
+}
+
+.single-player-button:hover{
+     /* 指针鼠标 */
+    cursor: pointer;
+}
+
+.multiplayer-button:hover{
+     /* 指针鼠标 */
+    cursor: pointer;
 }
