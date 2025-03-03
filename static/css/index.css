@@ -12,6 +12,8 @@ body {
     color: #333; /* 文字颜色 */
 }
 
+/* --- Logo Area--- */
+
 .logo-container {
     display: flex;
     position: absolute;
@@ -20,51 +22,62 @@ body {
 }
 
 .logo-image {
-    max-width: 50%; /* Logo 图片最大宽度，根据需要调整 */
+    max-width: 40%; /* Logo max width */
     height: auto;
-    margin-bottom: 20px; /* Logo 和文字之间的间距 */
+    margin-bottom: 20px;
 }
 
+/* --- Login Info Area--- */
 .login-info {
     position: absolute;
     right: 20px;
     top: 10px;
 }
 
+/* --- Buttons Area--- */
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(-50px);
+}
+
+
+/* common styles of buttons */
+.single-player-button,
+.multiplayer-button {
+    width: 250px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* add a hover effect on the buttons */
+.single-player-button:hover,
+.multiplayer-button:hover {
+    transform: scale(1.05); /* zoom in 5% */
+}
+
+/* --- Footer Area--- */
 .my-footer {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    font-size: 20px;
+    font-size: 13px;
     color: #666;
     text-align: center;
     font-weight: bold;
 }
 
 .footer-imgs {
-    display: flex; /* 使用 Flexbox 水平排列图片 */
-    justify-content: center; /* 水平居中图片 */
- }
-
-.wrapper {
     display: flex;
     justify-content: center;
-}
-
-.buttons {
-    display: flex;          /* 启用 Flexbox 布局 */
-    flex-direction: column; /* 设置主轴方向为垂直，使项目上下排列 */
-    align-items: center;    /* 可选：让按钮在水平方向居中对齐 (在 .buttons 容器内) */
-    /* justify-content: center;  如果你想在垂直方向上也在 .buttons 容器内居中按钮组，可以添加这个 */
-}
-
-.single-player-button:hover{
-     /* 指针鼠标 */
-    cursor: pointer;
-}
-
-.multiplayer-button:hover{
-     /* 指针鼠标 */
-    cursor: pointer;
-}
+    height:100px;
+ }

@@ -18,10 +18,10 @@
     <div class="login-info">
         {% if user is None %}
             <p>Welcome, {{ user.username }}!</p>
-            <a href="/logout">Logout</a>
+            <a href="/common/logout">Logout</a>
         {% else %}
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
+            <a href="/common/login">Login</a>
+            <a href="/common/register">Register</a>
         {% endif %}
     </div>
 
@@ -36,7 +36,7 @@
     <div class="my-footer">
         <p>Copyright @ Yanqian Chen & Cheng Wang 2025</p>
         <div class="footer-imgs">
-            <img src="/static/images/footer-img.png" class="footer-img1" alt="Copyright @ Yanqian Chen & Cheng Wang 2025">
+            <img src="/static/images/footer-img.png" class="footer-img" alt="Copyright @ Yanqian Chen & Cheng Wang 2025">
         </div>
     </div>
 
