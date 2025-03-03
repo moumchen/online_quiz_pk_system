@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+
     # the home page
     path('', RedirectView.as_view(url='/common/index'), name='home_page'),
 
@@ -35,6 +36,7 @@ urlpatterns = [
 
     # include all urls of the common module urls
     path('common/', include('common.urls')),
+
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
