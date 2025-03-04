@@ -6,4 +6,7 @@ from django.http import HttpResponse
 
 @login_required(login_url="/common/index?action=login")
 def index(request):
-    return HttpResponse("hello, welcome to system!")
+    return render(request, template_name="multiplayer/index.html")
+
+def room(request):
+    return render(request, template_name="multiplayer/room.html")

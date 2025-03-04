@@ -1,0 +1,39 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %} Quiz Quiz! - The Room {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/multiplayer_room.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="wrapper">
+        <span class="tips">{{ room_tip|default:"Henry has entered the room as your opponent! Let's start!" }}</span>
+        <span class="title">{{ room_title|default:"Django Vs. Spring" }}</span>
+        <div class="container">
+            <span class="owner">Room Owner: {{ room_owner|default:"Jaiden" }}</span>
+            <span class="permission">Permission:
+                {% if permission == 'private ' %}
+                    Public <a href="#">Switch to Private</a>
+                {% else %}
+                    Private <a href="#">Switch to Public</a>
+                {% endif %}
+        </span>
+            <span class="question">Questions: {{ question|default:"10" }}</span>
+            <span class="countdown">Time: <input class="countdown_input" type="text" value="{{ countdown|default:"3:00" }}"/></span>
+            <span class="invite" style="text-align:right;">
+            <img src="{% static 'images/orange_blank_button.png' %}" alt="Invite">
+                <a href="">Invite</a>
+            <img src="{% static 'images/blue_blank_button.png' %}" alt="Quit">
+                <a href="">Quit</a>
+                <img src="{% static 'images/green_blank_button.png' %}" alt="Quit">
+                <a href="">Start</a>
+        </span>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/multiplayer_room.js' %}"></script>
+{% endblock %}
