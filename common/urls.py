@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
-app_name = "common"
 
+# make sure there won't be any conflict
+app_name = "common"
 
 urlpatterns = [
     # path
