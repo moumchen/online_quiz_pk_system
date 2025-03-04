@@ -132,3 +132,10 @@
     transform: scale(1.05);
     cursor: pointer;
 }
+
+/* --- Switch tag ---*/
+.switch_a_tag {
+    color: dodgerblue;
+    font-weight: bold;
+}
+
