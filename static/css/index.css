@@ -80,6 +80,7 @@ body {
 .single-player-button:hover,
 .multiplayer-button:hover {
     transform: scale(1.05); /* zoom in 5% */
+    cursor:pointer;
 }
 
 /* --- Footer Area--- */
