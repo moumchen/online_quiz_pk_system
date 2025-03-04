@@ -15,10 +15,10 @@ def register(request):
     result = user_service.register(username, password, email)
     if result:
         context = {"info": "Register successfully! "}
-        return render(request, template_name='info.html', context=context)
+        return render(request, template_name='common/info.html', context=context)
     else:
         context = {"error": "Register failed, please try again!"}
-        return render(request, template_name="info.html", context=context)
+        return render(request, template_name="common/info.html", context=context)
 
 
 def login(request):
@@ -34,7 +34,7 @@ def login(request):
             return render(request, template_name="index_blank.html")
     else:
         context = {"error": "Login failed, please check your username and password!"}
-        return render(request, template_name="info.html", context=context)
+        return render(request, template_name="common/info.html", context=context)
 
 
 def logout(request):
