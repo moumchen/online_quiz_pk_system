@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Quiz Quiz! - Home Page{% endblock %}
+{% block head  %}
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <!-- Two buttons shown in the center of page -->
+    <div class="wrapper">
+        <div class="buttons">
+            <img src="/static/images/single_player_button.png" class="single-player-button" alt="Single Player Button">
+            <img src="/static/images/pvp_button.png" class="multiplayer-button" alt="Multiplayer Button">
+        </div>
+    </div>
+
+    <!-- Login / Register Div-->
+    <div class="login-div hidden">
+        <div class="username-question-div">
+            <img src="/static/images/chat_bubble_1.png" alt="">
+            <span class="username-question-text">Please type your username below</span>
+        </div>
+        <div class="username-reply-div">
+            <img src="/static/images/chat_bubble_2.png" alt="">
+            <input type="text" class="username-input" placeholder="Type here">
+        </div>
+        <div class="password-question-div hidden">
+            <img src="/static/images/chat_bubble_1.png">
+            <span class="password-question-text">Please type your password below</span>
+        </div>
+        <div class="password-reply-div hidden">
+            <img src="/static/images/chat_bubble_2.png" alt="">
+            <input type="password" class="password-input" placeholder="Type here">
+        </div>
+        <div class="password-confirm-question-div hidden">
+            <img src="/static/images/chat_bubble_1.png">
+            <span class="password-confirm-question-text">Please confirm your password below</span>
+        </div>
+        <div class="password-confirm-reply-div hidden">
+            <img src="/static/images/chat_bubble_2.png" alt="">
+            <input type="password" class="password-confirm-input" placeholder="Type here">
+        </div>
+        <div class="email-question-div hidden">
+            <img src="/static/images/chat_bubble_1.png">
+            <span class="email-question-text">Please type your email below</span>
+        </div>
+        <div class="email-reply-div hidden">
+            <img src="/static/images/chat_bubble_2.png" alt="">
+            <input type="email" class="email-input" placeholder="Type here">
+        </div>
+        <div class="login-buttons-div">
+            <div class="button-container submit-button">
+                <img src="/static/images/blue_blank_button.png">
+                <span class="button-text">submit</span>
+            </div>
+            <div class="button-container cancel-button">
+                <img src="/static/images/orange_blank_button.png">
+                <span class="button-text">cancel</span>
+            </div>
+        </div>
+    </div>
+
+    <form class="login-form hidden" action="/common/login" method="post">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+        <input type="text" id="login-username" name="username">
+        <input type="password" id="login-password" name="password">
+        <input type="hidden" id="login-back-url" name="back_url">
+        <input type="submit" value="Login">
+    </form>
+
+    <form class="register-form hidden" action="/common/register" method="post">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+        <input type="text" id="register-username" name="username">
+        <input type="password" id="register-password" name="password">
+        <input type="text" id="register-email" name="email">
+        <input type="submit">
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/homepage.js' %}"></script> {# 引入首页特定的 JavaScript #}
+{% endblock %}
