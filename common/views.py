@@ -27,7 +27,7 @@ def login(request):
     user = user_service.auth(username, password)
     if user is not None:
         user_service.login(request, user)
-        if back_url is not None:
+        if back_url != '':
             return render(request, template_name=back_url)
         else:
             return render(request, template_name="index.html")
