@@ -49,7 +49,7 @@ function form_action(type) {
             emailQuestionDiv.classList.add('hidden');
             emailReplyDiv.classList.add('hidden');
             // set switch tag
-            switchType.innerHTML = "Switch to Register";
+            switchType.innerHTML = "Switch to Sign Up";
             href = window.location.href;
             if (href.includes("action")) {
                 switchType.href = href.replace("action=login", "action=register");
@@ -57,7 +57,7 @@ function form_action(type) {
                 switchType.href = href + "?action=register";
             }
         } else if (type === "register") {
-            switchType.innerHTML = "Switch to Login";
+            switchType.innerHTML = "Already have an account? Log In";
             switchType.href = window.location.href.replace("action=register", "action=login");
             if (href.includes("action")) {
                 switchType.href = href.replace("action=register", "action=login");

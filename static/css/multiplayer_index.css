@@ -1,0 +1,52 @@
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(-50px);
+}
+
+.create-room-button-div,
+.available-rooms-button-div,
+.history-button-div{
+    position: relative;
+    cursor: pointer;
+}
+
+.create-room-button-div:hover,
+.available-rooms-button-div:hover,
+.history-button-div:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.create-room-button,
+.history-button{
+     width: 500px;
+    height: auto;
+}
+
+/* because the image is not the same as other images, so i just individually set the size of this imag @ Yanqian Chen e*/
+.available-rooms-button{
+    width: 550px;
+    height: auto;
+}
+
+
+.button-text {
+    position: absolute; /* 关键：绝对定位 */
+    top: 50%; /* 垂直方向居中 */
+    left: 50%; /* 水平方向居中 */
+    transform: translate(-50%, -50%); /* 使用 transform 进一步精确居中 */
+    color: white; /* 文字颜色，根据你的按钮图片调整 */
+    font-size: 35px; /* 文字大小，根据需要调整 */
+    font-weight: bold; /* 文字加粗，可选 */
+    text-shadow: 2px 2px 4px #000000; /* 可选：添加文字阴影，增加可读性 */
+    pointer-events: none; /* 重要：让文字不遮挡鼠标事件，点击事件穿透到图片 */
+    white-space: nowrap; /* 防止文字换行，如果需要单行文字 */
+}
