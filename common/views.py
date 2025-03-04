@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .services import user_service
 
@@ -40,3 +41,9 @@ def login(request):
 def logout(request):
     user_service.logout(request)
     return render(request, template_name="homepage.html")
+
+
+def check_username(request):
+    checked_username = request.GET.get("checked_username")
+    response_data = user_service.check_username(checked_username)
+    return JsonResponse(response_data)

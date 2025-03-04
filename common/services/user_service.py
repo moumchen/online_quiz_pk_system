@@ -11,3 +11,10 @@ def auth(username, password):
     user = authenticate(username=username, password=password)
     return user
 
+
+def check_username(checked_username):
+    result = User.objects.filter(username=checked_username).exists()
+    response_result = {
+        'result': result,
+    }
+    return response_result
