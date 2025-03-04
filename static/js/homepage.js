@@ -14,6 +14,7 @@ const emailReplyDiv = document.querySelector('.email-reply-div');
 const emailInput = document.querySelector('.email-input');
 const cancelButton = document.querySelector('.cancel-button');
 const submitButton = document.querySelector('.submit-button');
+const switchType = document.querySelector('.switch_a_tag');
 
 function resetForm() { // reset form to initial state
     overlay.classList.add("hidden");
@@ -29,6 +30,10 @@ function resetForm() { // reset form to initial state
     emailReplyDiv.classList.add('hidden');
     emailInput.value = '';
     currentFormType = null; // set current form type to null
+    switchType.innerHTML = "";
+    switchType.setAttribute('href', '');
+    // redirect to homepage
+    window.location.href = "/";
 }
 
 function form_action(type) {
@@ -43,8 +48,22 @@ function form_action(type) {
             passwordConfirmReplyDiv.classList.add('hidden');
             emailQuestionDiv.classList.add('hidden');
             emailReplyDiv.classList.add('hidden');
+            // set switch tag
+            switchType.innerHTML = "Switch to Register";
+            href = window.location.href;
+            if (href.includes("action")) {
+                switchType.href = href.replace("action=login", "action=register");
+            } else {
+                switchType.href = href + "?action=register";
+            }
         } else if (type === "register") {
-
+            switchType.innerHTML = "Switch to Login";
+            switchType.href = window.location.href.replace("action=register", "action=login");
+            if (href.includes("action")) {
+                switchType.href = href.replace("action=register", "action=login");
+            } else {
+                switchType.href = href + "?action=login";
+            }
         }
     };
 }
