@@ -5,7 +5,7 @@ from .services import user_service
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, template_name='homepage.html')
 
 
 def register(request):
@@ -14,10 +14,11 @@ def register(request):
     email = request.POST.get("email")
     result = user_service.register(username, password, email)
     if result:
-        return render(request, template_name='index.html')
+        context = {"info": "Register successfully! "}
+        return render(request, template_name='info.html', context=context)
     else:
-        context = {"error": "register failed, please try again!"}
-        return render(request, template_name="error.html", context=context)
+        context = {"error": "Register failed, please try again!"}
+        return render(request, template_name="info.html", context=context)
 
 
 def login(request):
@@ -30,12 +31,12 @@ def login(request):
         if back_url != '':
             return render(request, template_name=back_url)
         else:
-            return render(request, template_name="index.html")
+            return render(request, template_name="index_blank.html")
     else:
-        context = {"error": "login failed, please try again!"}
-        return render(request, template_name="error.html", context=context)
+        context = {"error": "Login failed, please check your username and password!"}
+        return render(request, template_name="info.html", context=context)
 
 
 def logout(request):
     user_service.logout(request)
-    return render(request, template_name="index.html")
+    return render(request, template_name="index_blank.html")
