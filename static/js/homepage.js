@@ -52,9 +52,21 @@ function form_action(type) {
 usernameInput.addEventListener('blur', function () {
     const username = usernameInput.value;
     if (username.trim() !== "") {
+        if (currentFormType === "register") { // if the form type is "register", show password confirm related elements
+            fetch(`/common/checkUsername?checked_username=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    // if the username has been registered, the result will be true
+                    if (data.result) {
+                        alert('This username has been registered!');
+                        usernameInput.value = '';
+                    }
+                });
+        }
         passwordQuestionDiv.classList.remove('hidden');
         passwordReplyDiv.classList.remove('hidden');
     }
+
 });
 
 passwordInput.addEventListener('blur', function () {
