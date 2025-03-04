@@ -109,8 +109,14 @@ submitButton.addEventListener('click', function () {
     }
 });
 
-document.getElementsByClassName("login_tag")[0].addEventListener("click", form_action("login"));
-document.getElementsByClassName("register_tag")[0].addEventListener("click", form_action("register"));
+const loginTags = document.getElementsByClassName("login_tag");
+if (loginTags.length > 0) {
+    loginTags[0].addEventListener("click", form_action("login"));
+}
+const registerTags = document.getElementsByClassName("register_tag");
+if (registerTags.length > 0) {
+    registerTags[0].addEventListener("click", form_action("register"));
+}
 
 // supporting login and register actions when open current page
 // and after login or register, supporting to return to the original page
@@ -122,9 +128,9 @@ if (queryString !== "") {
     if (hasAction) {
         action = urlParams.get("action");
         if (action === "login") {
-            back_url = urlParams.get("back_url");
-            if (back_url !== null) {
-                document.getElementById("login-back-url").value = back_url;
+            next_url = urlParams.get("next");
+            if (next_url !== null) {
+                document.getElementById("next_url").value = next_url;
             }
             document.getElementsByClassName("login_tag")[0].click();
         }
@@ -133,3 +139,10 @@ if (queryString !== "") {
         }
     }
 }
+
+// Add event listener to the single player button and multiplayer button here
+document.getElementsByClassName("multiplayer-button")[0].addEventListener("click", function () {
+    window.location.href = "/multiplayer/index";
+});
+
+// -----

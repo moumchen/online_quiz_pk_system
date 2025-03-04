@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .services import user_service
 
 
@@ -24,14 +24,14 @@ def register(request):
 def login(request):
     username = request.POST.get("username")
     password = request.POST.get("password")
-    back_url = request.POST.get("back_url")
+    next_url = request.POST.get("next_url")
     user = user_service.auth(username, password)
     if user is not None:
         user_service.login(request, user)
-        if back_url != '':
-            return render(request, template_name=back_url)
+        if next_url != '':
+            return redirect(next_url)
         else:
-            return render(request, template_name="index_blank.html")
+            return render(request, template_name="homepage.html")
     else:
         context = {"error": "Login failed, please check your username and password!"}
         return render(request, template_name="common/info.html", context=context)
@@ -39,4 +39,4 @@ def login(request):
 
 def logout(request):
     user_service.logout(request)
-    return render(request, template_name="index_blank.html")
+    return render(request, template_name="homepage.html")
