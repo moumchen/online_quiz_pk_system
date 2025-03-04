@@ -85,18 +85,15 @@
 
 <form class="login-form hidden" action="/common/login" method="post">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
-    <label for="username">Username:</label>
     <input type="text" id="login-username" name="username">
-    <label for="password">Password:</label>
     <input type="password" id="login-password" name="password">
+    <input type="hidden" id="login-back-url" name="back_url">
     <input type="submit" value="Login">
 </form>
 
 <form class="register-form hidden" action="/common/register" method="post">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
-      <label for="username">Username:</label>
     <input type="text" id="register-username" name="username">
-    <label for="password">Password:</label>
     <input type="password" id="register-password" name="password">
     <input type="text" id="register-email" name="email">
     <input type="submit">

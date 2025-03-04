@@ -82,3 +82,23 @@ function form_action(type) { // 修改 form_action 的定义方式为普通函�
 
 document.getElementsByClassName("login_tag")[0].addEventListener("click", form_action("login")); //  传递 form_action("login") 函数的返回值 (一个函数)
 document.getElementsByClassName("register_tag")[0].addEventListener("click", form_action("register")); // 传递 form_action("register") 函数的返回值 (一个函数)
+
+const queryString = window.location.search;
+if (queryString !== "") {
+    const urlParams = new URLSearchParams(queryString);
+    const hasAction = urlParams.has('action');
+
+    if (hasAction) {
+        action = urlParams.get("action");
+        if (action === "login") {
+            back_url = urlParams.get("back_url");
+            if (back_url !== null) {
+                document.getElementById("login-back-url").value = back_url;
+            }
+            document.getElementsByClassName("login_tag")[0].click();
+        }
+        if (action === "register") {
+            document.getElementsByClassName("register_tag")[0].click();
+        }
+    }
+}
