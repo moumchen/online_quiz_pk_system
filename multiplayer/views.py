@@ -10,3 +10,6 @@ def index(request):
 
 def room(request):
     return render(request, template_name="multiplayer/room.html")
+
+def recommendation(request):
+    return render(request, template_name="multiplayer/recommendation.html")
