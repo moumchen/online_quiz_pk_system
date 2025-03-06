@@ -1,0 +1,43 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %} Quiz Quiz! - Battling! {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/multiplayer-battle.css' %}"/>
+{% endblock %}
+
+
+{% block content %}
+    <div class="battle-content-wrapper">
+        <div class="battle-header">
+            <p class="battle-header-tip">Completion counts</p>
+            <p class="left-username">Jaiden</p>
+            <p class="left-score">01</p>
+            <img class="battle-header-img vs hidden" src="{% static 'images/vs.gif' %}" alt="VS"/>
+            <img class="battle-header-img clock " src="{% static 'images/clock.gif' %}" alt="VS"/>
+            <p class="right-score">03</p>
+            <p class="right-username">Henry</p>
+            <p class="countdown">3:00</p>
+        </div>
+        <div class="question-div">
+            <div class="question-area">
+                <p class="question-title">What is the capital of France?</p>
+                <p class="question-option-a">What is the capital of France?</p>
+                <p class="question-option-b">What is the capital of France?</p>
+                <p class="question-option-c">What is the capital of France?</p>
+                <p class="question-option-d">What is the capital of France?</p>
+            </div>
+        </div>
+        <div class="left-progress">
+            <p class="left-progress-info">Completion counts</p>
+            <p class="left-progress-count">+1</p>
+        </div>
+        <div class="right-progress">
+            <p class="right-progress-info">Completion counts</p>
+            <p class="right-progress-count">+1</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/multiplayer-battle.js' %}"></script>
+{% endblock %}

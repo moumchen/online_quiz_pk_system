@@ -19,3 +19,6 @@ def report_list(request):
 
 def report_detail(request):
     return render(request, template_name="common/report-detail.html")
+
+def battle(request):
+    return render(request, template_name="multiplayer/battle.html")
