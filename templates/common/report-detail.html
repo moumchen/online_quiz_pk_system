@@ -11,14 +11,56 @@
             <div class="report-list-paper">
                 <img class="report-icon " src="{% static 'images/report_icon.gif' %}" alt="report"/>
                 <img class="report-icon hidden" src="{% static 'images/you_win.gif' %}" alt="report"/>
-                <p class="report-list-title">{{ report_title|default:"Match Report" }}</p>
+                <p class="report-list-title">{{ report_title|default:"Quiz Report" }}</p>
                 <div class="scrollable-content">
-                    <p class="match-detail">
-                        {{ match_detail|default:"Match Detail</br>Match Detail row 2</br>Match Detail Row 3" }}
-                    </p>
-                    <p class="questions-details">
-                        {{ questions_detail|default:"Questions Detail</br>Questions Detail row 2</br>Questions Detail Row 3" }}
-                    </p>
+                    <div class="report-detail">
+                        <!-- Display statistics in a single line -->
+                        <b>Total Questions:</b> {{ total_questions }} |
+                        <b>Correct Answers:</b> {{ correct_answers }} |
+                        <b>Total Time Spent:</b> {{ total_response_time }} seconds
+                    </div>
+
+                    <div class="questions-details">
+                        {% if report_data %}
+                            <table class="report-table">
+                                <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Options</th>
+                                    <th>Selected Answer</th>
+                                    <th>Correct Answer</th>
+                                    <th>Explanation</th>
+                                    <th>Response Time (s)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for record in report_data %}
+                                    <tr>
+                                        <td>{{ record.question_text }}</td>
+                                        <td>
+                                            <ul>
+                                                <li>A: {{ record.option_a }}</li>
+                                                <li>B: {{ record.option_b }}</li>
+                                                <li>C: {{ record.option_c }}</li>
+                                                <li>D: {{ record.option_d }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>{{ record.selected_answer }}</td>
+                                        <td>{{ record.correct_answer }}</td>
+                                        <td>{{ record.correct_answer_explanation }}</td>
+                                        <td>{{ record.response_time }} seconds</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p>No quiz records found.</p>
+                        {% endif %}
+                    </div>
+
+
+                    <!-- Display the report data -->
+
                 </div>
             </div>
         </div>

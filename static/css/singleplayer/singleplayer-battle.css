@@ -1,0 +1,89 @@
+.battle-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 1000px;
+    width: 1300px;
+}
+
+.battle-header-img.clock {
+    position: absolute;
+    top: 100px; /* 距离顶部的距离 */
+    right: 50px; /* 距离右侧的距离 */
+    width: 100px; /* 调整图片大小 */
+    height: 100px; /* 调整图片大小 */
+}
+
+.countdown {
+    position: absolute;
+    font-size: 45px;
+    font-weight: bold;
+    color: red;
+    text-shadow: 1px 1px 1px black;
+    width: 100px; /* 调整图片大小 */
+    top: 150px; /* 调整顶部距离 */
+    right: 50px; /* 调整右侧距离 */
+    text-align: center;
+}
+
+
+.question-div {
+    position: relative;
+    height: 600px;
+    width: 1000px;
+    left: 150px;
+    top: -80px;
+    background-image: url("/static/images/question.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.question-title {
+    position: absolute;
+    font-weight: bold;
+    font-size: 40px;
+    width: 700px;
+    text-align: center;
+    height: 100px;
+    left: 150px;
+    top: 120px;
+    margin: 0;
+}
+
+.option-box {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    width: 280px;
+    height: 55px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* 选项位置 */
+.option-box[data-option="A"] { left: 150px; top: 300px; }
+.option-box[data-option="B"] { left: 550px; top: 300px; }
+.option-box[data-option="C"] { left: 150px; top: 420px; }
+.option-box[data-option="D"] { left: 550px; top: 420px; }
+
+
+/* 状态颜色 */
+.option-box.correct { background: #90EE90 !important; }
+.option-box.error { background: #FF7276 !important; }
+.option-box.selected { background: #f0f0f0; }
+
+.question-option-a:hover,
+.question-option-b:hover,
+.question-option-c:hover,
+.question-option-d:hover {
+    cursor: pointer;
+    color: red
+}
+
+.correct {
+    background-color: green;
+}
+
+.incorrect {
+    background-color: red;
+}

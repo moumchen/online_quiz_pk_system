@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -31,7 +32,7 @@ class QuizQuestion(models.Model):
     option_d = models.CharField(max_length=255, verbose_name="Option D")
     correct_answer = models.CharField(max_length=10, verbose_name="Correct Answer")
     correct_answer_explanation = models.TextField(verbose_name="Correct Answer Explanation", blank=True, null=True,
-                                                  help_text="Explanation of why the correct answer is correct")  # Added field
+                                                  help_text="Explanation of why the correct answer is correct")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     title = models.CharField(max_length=255, verbose_name="Generation Title",
                              help_text="Title summarizing the AI question generation (topic, difficulty, num_questions)",
@@ -43,3 +44,13 @@ class QuizQuestion(models.Model):
 
     def __str__(self):
         return self.question_text
+
+
+class UserQuizRecord(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE)
+    generation_id = models.CharField(max_length=255, verbose_name="Generation Batch ID")
+    selected_answer = models.CharField(max_length=10, verbose_name="Selected Answer")
+    is_correct = models.BooleanField(default=False)
+    response_time = models.IntegerField(verbose_name="Response Time (milliseconds)")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")

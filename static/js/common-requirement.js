@@ -79,7 +79,8 @@ submitButton.addEventListener('click', function () {
 
             // two ways to send data to server : 1. single player, 2- multiplayer
             if (quiz_type === "single") {
-                alert(`${quiz_id}`)
+                 // redirect to multiplayer page
+                window.location.href = `/singleplayer/battle?quiz_id=${quiz_id}`;
             } else if (quiz_type === "multi") {
                 // redirect to multiplayer page
                 window.location.href = `/multiplayer/room?quiz=${quiz_id}`;

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>答题报告</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- 你可以根据需要添加样式 -->
+</head>
+<body>
+    <h1>答题报告</h1>
+    <h2>生成 ID: {{ generation_id }}</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>问题</th>
+                <th>选项 A</th>
+                <th>选项 B</th>
+                <th>选项 C</th>
+                <th>选项 D</th>
+                <th>正确答案</th>
+                <th>用户选择</th>
+                <th>是否正确</th>
+                <th>响应时间 (秒)</th>
+                <th>正确答案解释</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in report_data %}
+                <tr>
+                    <td>{{ record.question_text }}</td>
+                    <td>{{ record.option_a }}</td>
+                    <td>{{ record.option_b }}</td>
+                    <td>{{ record.option_c }}</td>
+                    <td>{{ record.option_d }}</td>
+                    <td>{{ record.correct_answer }}</td>
+                    <td>{{ record.selected_answer }}</td>
+                    <td>
+                        {% if record.is_correct %}
+                            是
+                        {% else %}
+                            否
+                        {% endif %}
+                    </td>
+                    <td>{{ record.response_time }}</td>
+                    <td>{{ record.correct_answer_explanation }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'quiz_home' %}">返回首页</a> <!-- 根据需要修改链接 -->
+</body>
+</html>

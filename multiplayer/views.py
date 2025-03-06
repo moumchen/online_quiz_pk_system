@@ -18,6 +18,7 @@ def report_list(request):
     return render(request, template_name="common/report-list.html")
 
 def report_detail(request):
+    context = {"report_title": "wangchengshizhu"}
     return render(request, template_name="common/report-detail.html")
 
 def battle(request):
