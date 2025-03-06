@@ -1,0 +1,230 @@
+.battle-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 1000px;
+    width: 1300px;
+}
+
+
+.battle-header {
+    position: relative;
+    background-image: url("/static/images/battle-header.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 200px;
+    width: 600px;
+    left: 350px;
+    top: -100px;
+}
+
+
+.battle-header-img {
+    position: relative;
+    height: 180px;
+    width: 180px;
+    top: 20px;
+}
+
+.left-score {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    left: -50px;
+    top: -45px;
+    display: inline;
+    font-weight: bold;
+    font-size: 50px;
+    color: deepskyblue;
+    text-shadow: 1px 1px 1px black;
+}
+
+.right-score {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    left: 50px;
+    top: -45px;
+    display: inline;
+    font-weight: bold;
+    font-size: 50px;
+    color: deepskyblue;
+    text-shadow: 1px 1px 1px black;
+}
+
+.battle-header-tip {
+    position: relative;
+    width: 300px;
+    display: block;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 15px;
+    margin: 0;
+    text-align: center;
+    color: #BD3124;
+    left: 150px;
+    top: 40px;
+}
+
+.left-username {
+    position: absolute;
+    font-size: 50px;
+    font-weight: bold;
+    color: gold;
+    text-shadow: 2px 1px 3px black;
+    left: -310px;
+    top: 50px;
+    width: 300px;
+    text-align: right;
+}
+
+.right-username {
+    position: absolute;
+    font-size: 50px;
+    font-weight: bold;
+    color: gold;
+    text-shadow: 2px 1px 3px black;
+    right: -300px;
+    top: 50px;
+    width: 300px;
+    text-align: left;
+}
+
+.countdown {
+    position: absolute;
+    font-size: 45px;
+    font-weight: bold;
+    color: red;
+    text-shadow: 1px 1px 1px black;
+    top: 150px;
+    left: 245px;
+    text-align: center;
+}
+
+.question-div {
+    position: relative;
+    height: 600px;
+    width: 1000px;
+    left: 150px;
+    top: -80px;
+    background-image: url("/static/images/question.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.question-title {
+    position: absolute;
+    font-weight: bold;
+    font-size: 40px;
+    width: 700px;
+    text-align: center;
+    height: 100px;
+    left: 150px;
+    top: 120px;
+    margin: 0;
+}
+
+.question-option-a {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    width: 280px;
+    height: 55px;
+    left: 150px;
+    top: 280px;
+}
+
+.question-option-b {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    width: 280px;
+    height: 55px;
+    left: 550px;
+    top: 280px;
+}
+
+.question-option-c {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    width: 280px;
+    height: 55px;
+    left: 150px;
+    top: 400px;
+}
+
+.question-option-d {
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+    width: 280px;
+    height: 55px;
+    left: 550px;
+    top: 400px;
+}
+
+.question-option-a:hover,
+.question-option-b:hover,
+.question-option-c:hover,
+.question-option-d:hover {
+    cursor: pointer;
+    color: red
+}
+
+.left-progress {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    left: 0;
+    top: 500px;
+    background-image: url("/static/images/wave.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.right-progress {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    right: 0;
+    top: 500px;
+    background-image: url("/static/images/wave.gif");
+    background-size: cover;
+    /* let the background img mirror */
+    transform: scaleX(-1);
+    background-repeat: no-repeat;
+}
+
+.right-progress-info,
+.left-progress-info {
+    display: block;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 15px;
+    margin: 0;
+    text-align: center;
+    color: #BD3124;
+    left: 150px;
+    top: 60px;
+
+}
+
+.right-progress-count,
+.left-progress-count {
+    display: block;
+    font-weight: bold;
+    font-size: 100px;
+    margin: 0;
+    text-align: center;
+    color: #BD3124;
+    left: 150px;
+    top: 60px;
+}
+
+.right-progress-info,
+.right-progress-count {
+    transform: scaleX(-1);
+
+);
+}

@@ -10,5 +10,6 @@ urlpatterns = [
     path('recommendation', views.recommendation, name='multiplayer_recommendation'),
     path('report-list', views.report_list, name='multiplayer_report_list'),
     path('report-detail', views.report_detail, name='multiplayer_report_detail'),
+    path('battle', views.battle, name='multiplayer_battle'),
 
 ]
