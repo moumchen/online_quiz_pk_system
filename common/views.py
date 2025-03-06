@@ -91,12 +91,12 @@ def generate_quiz_view(request):
         # Call service to get question data
         result = quiz_generation_service.generate_quiz_questions(topic, difficulty, num_questions)
 
-        if result and isinstance(result, dict) and 'questions' in result:
-            # Generation successful, return question data
+        if result and isinstance(result, dict) and 'generation_id' in result:
+            # Generation successful, return generation_id
             return JsonResponse({
                 'status': 'success',
                 'message': 'Questions generated successfully',
-                'data': result['questions']  # Return the list of questions
+                'generation_id': result['generation_id']  # Return the generation_id
             }, json_dumps_params={'ensure_ascii': False})  # Ensure Chinese characters are displayed correctly
         else:
             # Generation failed, return error message
