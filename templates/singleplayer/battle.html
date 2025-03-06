@@ -1,0 +1,36 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %} Quiz Quiz! - Battling! {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/singleplayer/singleplayer-battle.css' %}"/>
+{% endblock %}
+
+
+{% block content %}
+    <img class="battle-header-img clock" src="{% static 'images/clock.gif' %}" alt="VS"/>
+    <p class="countdown">0:00</p>
+    <div class="battle-content-wrapper">
+        {% for question in questions %}
+            <div class="question-div"
+                 data-question-id="{{ question.id }}"  {# 添加 data-question-id 属性 #}
+                 data-generation-id="{{ question.generation_id }}" {# 添加 data-generation-id 属性 #}
+                 data-question-index="{{ forloop.counter0 }}"
+                 data-correct="{{ question.correct_answer }}"
+                 style="display: {% if forloop.first %}block{% else %}none{% endif %}">
+                <div class="question-area">
+                    <p class="question-title">{{ question.question_text }}</p>
+                    <div class="option-box" data-option="A">{{ question.option_a }}</div>
+                    <div class="option-box" data-option="B">{{ question.option_b }}</div>
+                    <div class="option-box" data-option="C">{{ question.option_c }}</div>
+                    <div class="option-box" data-option="D">{{ question.option_d }}</div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/singleplayer/singleplayer-battle.js' %}"></script>
+{% endblock %}

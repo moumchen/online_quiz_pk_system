@@ -1,4 +1,3 @@
-
 .report-list-wrapper {
     display: flex;
     flex-direction: column;
@@ -38,7 +37,7 @@
     top: 50px;
     left: 200px;
     display: block;
-    margin-top:0;
+    margin-top: 0;
     margin-bottom: 10px;
 }
 
@@ -59,4 +58,52 @@
     background-color: #FFBF6B;
     color: white;
     cursor: pointer;
+}
+
+.questions-details {
+    margin: 20px auto; /* Center the questions details section */
+    width: 90%; /* Make it responsive */
+    max-width: 1200px; /* Set a maximum width */
+}
+
+.report-detail {
+    margin: auto; /* Center the questions details section */
+    width: 90%; /* Make it responsive */
+    max-width: 1200px; /* Set a maximum width */
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse; /* Merge borders */
+    margin-top: 20px; /* Add space above the table */
+}
+
+.report-table th, .report-table td {
+    border: 1px solid #ddd; /* Add border to cells */
+    padding: 12px; /* Add padding for better spacing */
+    text-align: left; /* Align text to the left */
+}
+
+.report-table th {
+    background-color: #FFBF6B; /* Header background color */
+    color: #333; /* Header text color */
+    font-weight: bold; /* Make header text bold */
+}
+
+.report-table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row background color */
+}
+
+.report-table tr:hover {
+    background-color: #ddd; /* Row hover effect */
+}
+
+.report-table td ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+}
+
+.report-table td ul li {
+    padding: 5px 0; /* Add spacing between options */
 }
