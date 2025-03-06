@@ -23,6 +23,9 @@ def generate_quiz_questions(topic, difficulty, num_questions):
     generation_id = str(uuid.uuid4())  # Generate a unique batch ID
     generated_questions = []  # List to store the generated questions
 
+    # Construct the title
+    title = f"Quiz on {topic} - {difficulty} - {num_questions} Questions"
+
     # Construct the Prompt
     prompt = f"Please generate {num_questions} questions about {topic} with {difficulty} difficulty. Each question should include 4 options (labeled A, B, C, D), with one correct answer, and a concise explanation of why that answer is correct. The format should be: {{\"questions\": [{{\"question_text\": \"Question 1 content\", \"options\": {{\"A\": \"Option 1\", \"B\": \"Option 2\", \"C\": \"Option 3\", \"D\": \"Option 4\"}}, \"correct_answer\": \"Correct answer content\", \"correct_answer_explanation\": \"Concise explanation of why the correct answer is correct\"}}, ... ]}}. Do not add any extra text or explanations. Give me plain text, not markdown format."
 
@@ -65,8 +68,10 @@ def generate_quiz_questions(topic, difficulty, num_questions):
             transformed_questions.append(transformed_question)
 
         # Save to the database
+        question_ids = []  # Store the IDs of the created questions
         for question_data in transformed_questions:
-            QuizQuestion.objects.create(
+            quiz_question = QuizQuestion.objects.create(
+                title=title,  # Save the title
                 generation_id=generation_id,
                 category=topic,
                 difficulty=difficulty,
@@ -79,8 +84,13 @@ def generate_quiz_questions(topic, difficulty, num_questions):
                 correct_answer_explanation=question_data['correct_answer_explanation'],  # Save the explanation
             )
             generated_questions.append(question_data)  # Add the question to the list
+            question_ids.append(quiz_question.id)  # Store the ID of the created question
+
+        # Update the title for all created questions
+        QuizQuestion.objects.filter(id__in=question_ids).update(title=title)
 
         return {"questions": generated_questions}  # Return a dictionary containing the list of questions
+
 
     except requests.exceptions.RequestException as e:
         print(f"API request error: {e}")

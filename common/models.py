@@ -33,6 +33,9 @@ class QuizQuestion(models.Model):
     correct_answer_explanation = models.TextField(verbose_name="Correct Answer Explanation", blank=True, null=True,
                                                   help_text="Explanation of why the correct answer is correct")  # Added field
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    title = models.CharField(max_length=255, verbose_name="Generation Title",
+                             help_text="Title summarizing the AI question generation (topic, difficulty, num_questions)",
+                             blank=True, null=True)  # Added field
 
     class Meta:
         verbose_name = "Quiz Question"
