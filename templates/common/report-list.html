@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} Quiz Quiz! - History List {% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{% static 'css/multiplayer_report_list.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/common-report-list.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
                 <img class="report-icon" src="{% static 'images/report_icon.gif' %}" alt="report"/>
                 <p class="report-list-title">History List</p>
                 <div class="scrollable-content">
-                    <p>> 2025.02.25 Python/Django [win]</p>
+                    <p id="1">> 2025.02.25 Python/Django [win]</p>
                     <p>> 2025.02.25 Python/Django [win]</p>
                     <p>> 2025.02.25 Python/Django [win]</p>
                     <p>> 2025.02.25 Python/Django [win]</p>
@@ -42,5 +42,5 @@
     </div>
 {% endblock %}
 {% block scripts %}
-    <script src="{% static 'js/multiplayer_report_list.js' %}"></script>
+    <script src="{% static 'js/common-report-list.js' %}"></script>
 {% endblock %}
