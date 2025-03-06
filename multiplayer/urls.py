@@ -8,5 +8,6 @@ urlpatterns = [
     path('index', views.index, name='multiplayer_index'),
     path('room', views.room, name='multiplayer_room'),
     path('recommendation', views.recommendation, name='multiplayer_recommendation'),
+    path('report-list', views.report_list, name='multiplayer_report_list'),
 
 ]

@@ -13,3 +13,6 @@ def room(request):
 
 def recommendation(request):
     return render(request, template_name="multiplayer/recommendation.html")
+
+def report_list(request):
+    return render(request, template_name="multiplayer/report-list.html")
