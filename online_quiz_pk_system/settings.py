@@ -76,10 +76,10 @@ WSGI_APPLICATION = 'online_quiz_pk_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'quiz',
+        'NAME': 'quizquiz',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'wangc958',
+        'HOST': '54.79.20.77',
         'PORT': '3306'
     }
 }
