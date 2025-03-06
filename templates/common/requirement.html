@@ -1,0 +1,51 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %} Quiz Quiz! - Requirements {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/common-requirement.css' %}"/>
+{% endblock %}
+
+{% block content %}
+
+    <div class="wrapper">
+        <div class="requirement-div">
+            <div class="field-question-div">
+                <img src="{% static 'images/chat_bubble_1.png' %}" alt="">
+                <span class="field-question-text">Please type what topic you are interested in</span>
+            </div>
+            <div class="field-reply-div">
+                <img src="{% static 'images/chat_bubble_2.png' %}" alt="">
+                <input type="text" class="field-input" placeholder="Type here">
+            </div>
+            <div class="difficulty-question-div hidden">
+                <img src="{% static 'images/chat_bubble_1.png' %}">
+                <span class="difficulty-question-text">Please type the difficulty that you want to start with</span>
+            </div>
+            <div class="difficulty-reply-div hidden">
+                <img src="{% static 'images/chat_bubble_2.png' %}" alt="">
+                <input type="text" class="difficulty-input" placeholder="Type here">
+            </div>
+            <div class="number-question-div hidden">
+                <img src="{% static 'images/chat_bubble_1.png' %}">
+                <span class="number-question-text">Please type how many questions that you want to answer</span>
+            </div>
+            <div class="number-reply-div hidden">
+                <img src="{% static 'images/chat_bubble_2.png' %}" alt="">
+                <input type="text" class="number-input" placeholder="Type here">
+            </div>
+            <div class="login-buttons-div">
+                <div class="button-container submit-button">
+                    <img src="{% static 'images/blue_blank_button.png' %}">
+                    <span class="button-text">submit</span>
+                </div>
+                <div class="button-container cancel-button">
+                    <img src="{% static 'images/orange_blank_button.png' %}">
+                    <span class="button-text">cancel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/common-requirement.js' %}"></script>
+{% endblock %}

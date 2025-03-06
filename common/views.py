@@ -110,3 +110,8 @@ def generate_quiz_view(request):
             'status': 'error',
             'message': '只支持 POST 请求'
         }, status=405)  # 返回 405 Method Not Allowed
+
+
+
+def requirement(request):
+    return render(request, template_name="common/requirement.html")
