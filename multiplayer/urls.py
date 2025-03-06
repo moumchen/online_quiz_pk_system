@@ -9,5 +9,6 @@ urlpatterns = [
     path('room', views.room, name='multiplayer_room'),
     path('recommendation', views.recommendation, name='multiplayer_recommendation'),
     path('report-list', views.report_list, name='multiplayer_report_list'),
+    path('report-detail', views.report_detail, name='multiplayer_report_detail'),
 
 ]

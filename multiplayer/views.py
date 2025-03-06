@@ -16,3 +16,6 @@ def recommendation(request):
 
 def report_list(request):
     return render(request, template_name="common/report-list.html")
+
+def report_detail(request):
+    return render(request, template_name="common/report-detail.html")
