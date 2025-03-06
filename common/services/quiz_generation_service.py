@@ -16,12 +16,11 @@ def generate_quiz_questions(topic, difficulty, num_questions):
         num_questions (int): The number of questions.
 
     Returns:
-        dict: A dictionary containing the question data, or an error message.
+        dict: A dictionary containing the generation_id, or an error message.
     """
 
     api_url = "https://api.deepseek.com/chat/completions"
     generation_id = str(uuid.uuid4())  # Generate a unique batch ID
-    generated_questions = []  # List to store the generated questions
 
     # Construct the title
     title = f"Quiz on {topic} - {difficulty} - {num_questions} Questions"
@@ -68,9 +67,8 @@ def generate_quiz_questions(topic, difficulty, num_questions):
             transformed_questions.append(transformed_question)
 
         # Save to the database
-        question_ids = []  # Store the IDs of the created questions
         for question_data in transformed_questions:
-            quiz_question = QuizQuestion.objects.create(
+            QuizQuestion.objects.create(
                 title=title,  # Save the title
                 generation_id=generation_id,
                 category=topic,
@@ -83,14 +81,8 @@ def generate_quiz_questions(topic, difficulty, num_questions):
                 correct_answer=question_data['correct_answer'],
                 correct_answer_explanation=question_data['correct_answer_explanation'],  # Save the explanation
             )
-            generated_questions.append(question_data)  # Add the question to the list
-            question_ids.append(quiz_question.id)  # Store the ID of the created question
 
-        # Update the title for all created questions
-        QuizQuestion.objects.filter(id__in=question_ids).update(title=title)
-
-        return {"questions": generated_questions}  # Return a dictionary containing the list of questions
-
+        return {"generation_id": generation_id}  # Return a dictionary containing the generation_id
 
     except requests.exceptions.RequestException as e:
         print(f"API request error: {e}")
