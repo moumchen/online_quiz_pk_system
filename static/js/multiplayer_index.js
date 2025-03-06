@@ -1,9 +1,9 @@
 document.getElementsByClassName("create-room-button-div")[0].addEventListener('click', function () {
-    alert('create room');
+    window.location.href="/common/requirement";
 });
 document.getElementsByClassName("available-rooms-button-div")[0].addEventListener('click', function () {
-    alert('available rooms');
+    window.location.href = "/multiplayer/recommendation";
 });
 document.getElementsByClassName("history-button-div")[0].addEventListener('click', function () {
-    alert('history');
+    window.location.href = "/multiplayer/report-list";
 });

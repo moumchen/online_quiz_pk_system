@@ -12,4 +12,5 @@ urlpatterns = [
     path('logout', views.logout, name = 'logout'),
     path('checkUsername', views.check_username, name='check_username' ),
     path('generate_quiz', views.generate_quiz_view, name='generate_quiz'),
+    path('requirement', views.requirement, name='requirement'),
 ]

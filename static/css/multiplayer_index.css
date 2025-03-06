@@ -2,6 +2,7 @@
 .wrapper {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .buttons {
@@ -50,3 +51,5 @@
     pointer-events: none; /* 重要：让文字不遮挡鼠标事件，点击事件穿透到图片 */
     white-space: nowrap; /* 防止文字换行，如果需要单行文字 */
 }
+
+
