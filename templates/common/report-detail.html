@@ -1,0 +1,29 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %} Quiz Quiz! - History List {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/common-report-detail.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="report-list-wrapper">
+        <div class="report-paper-div">
+            <div class="report-list-paper">
+                <img class="report-icon " src="{% static 'images/report_icon.gif' %}" alt="report"/>
+                <img class="report-icon hidden" src="{% static 'images/you_win.gif' %}" alt="report"/>
+                <p class="report-list-title">{{ report_title|default:"Match Report" }}</p>
+                <div class="scrollable-content">
+                    <p class="match-detail">
+                        {{ match_detail|default:"Match Detail</br>Match Detail row 2</br>Match Detail Row 3" }}
+                    </p>
+                    <p class="questions-details">
+                        {{ questions_detail|default:"Questions Detail</br>Questions Detail row 2</br>Questions Detail Row 3" }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/common-report-detail.js' %}"></script>
+{% endblock %}

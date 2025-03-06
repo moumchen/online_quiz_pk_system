@@ -1,0 +1,62 @@
+
+.report-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 980px;
+    width: 1300px;
+    position: relative;
+}
+
+.report-paper-div {
+    background-image: url("/static/images/paper.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 980px;
+    width: 1300px;
+    z-index: 103;
+    position: absolute;
+}
+
+.report-icon {
+    position: relative;
+    top: 50px;
+    right: -450px;
+    width: 100px;
+    height: 100px;
+    display: inline;
+}
+
+.report-list-title {
+    text-align: left;
+    width: 1300px;
+    font-size: 60px;
+    font-weight: bold;
+    color: #FFBF6B;
+    text-shadow: 2px 1px 3px black;
+    position: relative;
+    top: 50px;
+    left: 200px;
+    display: block;
+    margin-top:0;
+    margin-bottom: 10px;
+}
+
+.scrollable-content {
+    overflow-y: auto;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    width: 850px;
+    height: 600px;
+    position: relative;
+    top: 50px;
+    left: 200px;
+    border: none;
+}
+
+.scrollable-content p:hover {
+    background-color: #FFBF6B;
+    color: white;
+    cursor: pointer;
+}
