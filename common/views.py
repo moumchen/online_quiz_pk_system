@@ -52,65 +52,64 @@ def check_username(request):
     return JsonResponse(response_data)
 
 
-@csrf_exempt  # 如果你没有其他 CSRF 保护机制，需要添加此装饰器
+@csrf_exempt  # If you don't have other CSRF protection mechanisms, add this decorator
 def generate_quiz_view(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)  # 解析 JSON 数据
+            data = json.loads(request.body)  # Parse JSON data
             topic = data.get('topic')
             difficulty = data.get('difficulty')
             num_questions = data.get('num_questions')
         except json.JSONDecodeError:
             return JsonResponse({
                 'status': 'error',
-                'message': '无效的 JSON 数据'
-            }, status=400)  # 返回 400 Bad Request
+                'message': 'Invalid JSON data'
+            }, status=400)  # Return 400 Bad Request
 
-        # 检查参数是否缺失
+        # Check if parameters are missing
         if not all([topic, difficulty, num_questions]):
             return JsonResponse({
                 'status': 'error',
-                'message': '缺少参数：topic, difficulty, num_questions'
-            }, status=400)  # 返回 400 Bad Request
+                'message': 'Missing parameters: topic, difficulty, num_questions'
+            }, status=400)  # Return 400 Bad Request
 
         try:
             num_questions = int(num_questions)
         except ValueError:
             return JsonResponse({
                 'status': 'error',
-                'message': 'num_questions 必须是一个整数'
-            }, status=400)  # 返回 400 Bad Request
+                'message': 'num_questions must be an integer'
+            }, status=400)  # Return 400 Bad Request
 
-        # 确保 num_questions 是一个正整数
+        # Ensure num_questions is a positive integer
         if not isinstance(num_questions, int) or num_questions <= 0:
             return JsonResponse({
                 'status': 'error',
-                'message': 'num_questions 必须是一个正整数'
-            }, status=400)  # 返回 400 Bad Request
+                'message': 'num_questions must be a positive integer'
+            }, status=400)  # Return 400 Bad Request
 
-        # 调用 service 获取题目数据
+        # Call service to get question data
         result = quiz_generation_service.generate_quiz_questions(topic, difficulty, num_questions)
 
-        if result and isinstance(result, dict) and '题目列表' in result:
-            # 生成成功，返回题目数据
+        if result and isinstance(result, dict) and 'questions' in result:
+            # Generation successful, return question data
             return JsonResponse({
                 'status': 'success',
-                'message': '题目生成成功',
-                'data': result['题目列表']  # 返回题目列表
-            }, json_dumps_params={'ensure_ascii': False})  # 确保中文正常显示
+                'message': 'Questions generated successfully',
+                'data': result['questions']  # Return the list of questions
+            }, json_dumps_params={'ensure_ascii': False})  # Ensure Chinese characters are displayed correctly
         else:
-            # 生成失败，返回错误信息
+            # Generation failed, return error message
             return JsonResponse({
                 'status': 'error',
-                'message': '题目生成失败',
-                'error': result  # 返回错误信息 (如果 service 返回了错误信息)
+                'message': 'Failed to generate questions',
+                'error': result  # Return error message (if the service returned an error message)
             }, json_dumps_params={'ensure_ascii': False})
     else:
         return JsonResponse({
             'status': 'error',
-            'message': '只支持 POST 请求'
-        }, status=405)  # 返回 405 Method Not Allowed
-
+            'message': 'Only POST requests are supported'
+        }, status=405)  # Return 405 Method Not Allowed
 
 
 def requirement(request):

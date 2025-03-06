@@ -2,33 +2,34 @@
 import requests
 import json
 import uuid
-from django.conf import settings  # 导入 settings
-from ..models import QuizQuestion  # 确保导入你的模型 (使用相对导入)
+from django.conf import settings  # Import settings
+from ..models import QuizQuestion  # Ensure you import your model (using relative import)
+
 
 def generate_quiz_questions(topic, difficulty, num_questions):
     """
-    调用 DeepSeek API 生成题目并保存到数据库。
+    Calls the DeepSeek API to generate questions and saves them to the database.
 
     Args:
-        topic (str): 题目主题。
-        difficulty (str): 题目难度。
-        num_questions (int): 题目数量。
+        topic (str): The topic of the questions.
+        difficulty (str): The difficulty of the questions.
+        num_questions (int): The number of questions.
 
     Returns:
-        dict: 包含题目数据的字典，或者错误信息。
+        dict: A dictionary containing the question data, or an error message.
     """
 
     api_url = "https://api.deepseek.com/chat/completions"
-    generation_id = str(uuid.uuid4())  # 生成唯一批次 ID
-    generated_questions = [] # 用于存储生成的题目
+    generation_id = str(uuid.uuid4())  # Generate a unique batch ID
+    generated_questions = []  # List to store the generated questions
 
-    # 构建 Prompt
-    prompt = f"请生成 {num_questions} 道关于{topic}的{difficulty}难度的题目，每道题目包含 4 个选项（用A、B、C、D表示），其中一个是正确答案，格式为 {{\"题目列表\": [{{\"题目\": \"题目 1 内容\", \"选项\": {{\"A\": \"选项 1\", \"B\": \"选项 2\", \"C\": \"选项 3\", \"D\": \"选项 4\"}}, \"正确答案\": \"正确答案内容\"}}, ... ]}}，不要添加任何额外的文字或解释， 请给我纯文本不要md格式。"
+    # Construct the Prompt
+    prompt = f"Please generate {num_questions} questions about {topic} with {difficulty} difficulty. Each question should include 4 options (labeled A, B, C, D), with one correct answer, and a concise explanation of why that answer is correct. The format should be: {{\"questions\": [{{\"question_text\": \"Question 1 content\", \"options\": {{\"A\": \"Option 1\", \"B\": \"Option 2\", \"C\": \"Option 3\", \"D\": \"Option 4\"}}, \"correct_answer\": \"Correct answer content\", \"correct_answer_explanation\": \"Concise explanation of why the correct answer is correct\"}}, ... ]}}. Do not add any extra text or explanations. Give me plain text, not markdown format."
 
     payload = {
         "model": "deepseek-chat",
         "messages": [
-            {"role": "system", "content": "你是一个答题系统出题助手。"},
+            {"role": "system", "content": "You are a quiz system question generation assistant."},
             {"role": "user", "content": prompt}
         ],
         "stream": False
@@ -36,45 +37,57 @@ def generate_quiz_questions(topic, difficulty, num_questions):
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer sk-4288fad1b97c408d810cde6d35ce4c99"  # 添加 Authorization header
+        "Authorization": "Bearer sk-4288fad1b97c408d810cde6d35ce4c99"  # Add Authorization header
     }
 
     try:
         response = requests.post(api_url, headers=headers, data=json.dumps(payload))
-        response.raise_for_status()  # 检查 HTTP 错误
+        response.raise_for_status()  # Check for HTTP errors
         response_data = response.json()
 
-        # 解析 JSON 数据
+        # Parse the JSON data
         content = response_data['choices'][0]['message']['content']
         try:
             quiz_data = json.loads(content)
         except json.JSONDecodeError as e:
-            print(f"JSON 解析错误: {content}")
-            return {"error": f"JSON 解析错误: {e}"}
+            print(f"JSON parsing error: {content}")
+            return {"error": f"JSON parsing error: {e}"}
 
-        # 保存到数据库
-        for question_data in quiz_data['题目列表']:
+        # Transform the data to use English keys
+        transformed_questions = []
+        for item in quiz_data.get('questions', []):
+            transformed_question = {
+                'question_text': item.get('question_text', ''),
+                'options': item.get('options', {}),
+                'correct_answer': item.get('correct_answer', ''),
+                'correct_answer_explanation': item.get('correct_answer_explanation', '')  # Get the explanation
+            }
+            transformed_questions.append(transformed_question)
+
+        # Save to the database
+        for question_data in transformed_questions:
             QuizQuestion.objects.create(
                 generation_id=generation_id,
                 category=topic,
                 difficulty=difficulty,
-                question_text=question_data['题目'],
-                option_a=question_data['选项']['A'],
-                option_b=question_data['选项']['B'],
-                option_c=question_data['选项']['C'],
-                option_d=question_data['选项']['D'],
-                correct_answer=question_data['正确答案'],
+                question_text=question_data['question_text'],
+                option_a=question_data['options']['A'],
+                option_b=question_data['options']['B'],
+                option_c=question_data['options']['C'],
+                option_d=question_data['options']['D'],
+                correct_answer=question_data['correct_answer'],
+                correct_answer_explanation=question_data['correct_answer_explanation'],  # Save the explanation
             )
-            generated_questions.append(question_data) # 将题目添加到列表中
+            generated_questions.append(question_data)  # Add the question to the list
 
-        return {"题目列表": generated_questions} # 返回包含题目列表的字典
+        return {"questions": generated_questions}  # Return a dictionary containing the list of questions
 
     except requests.exceptions.RequestException as e:
-        print(f"API 请求错误: {e}")
-        return {"error": f"API 请求错误: {e}"}
+        print(f"API request error: {e}")
+        return {"error": f"API request error: {e}"}
     except KeyError as e:
-        print(f"JSON 结构错误: 缺少键 {e}")
-        return {"error": f"JSON 结构错误: 缺少键 {e}"}
+        print(f"JSON structure error: Missing key {e}")
+        return {"error": f"JSON structure error: Missing key {e}"}
     except Exception as e:
-        print(f"发生未知错误: {e}")
-        return {"error": f"发生未知错误: {e}"}
+        print(f"An unknown error occurred: {e}")
+        return {"error": f"An unknown error occurred: {e}"}
