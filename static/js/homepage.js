@@ -176,4 +176,8 @@ document.getElementsByClassName("multiplayer-button")[0].addEventListener("click
     window.location.href = "/multiplayer/index";
 });
 
+document.getElementsByClassName("single-player-button")[0].addEventListener("click", function () {
+    window.location.href = "/singleplayer/index";
+});
+
 // -----
