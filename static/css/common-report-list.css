@@ -30,10 +30,10 @@
 .report-list-title {
     text-align: left;
     width: 1300px;
-    font-size: 40px;
+    font-size: 60px;
     font-weight: bold;
-    color: Black;
-    text-shadow: 1px 1px 2px white;
+    color: #FFBF6B;
+    text-shadow: 2px 1px 3px black;
     position: relative;
     top: 50px;
     left: 200px;
@@ -55,3 +55,8 @@
     border: none;
 }
 
+.scrollable-content p:hover {
+    background-color: #FFBF6B;
+    color: white;
+    cursor: pointer;
+}
