@@ -20,20 +20,23 @@ class Config(models.Model):
 
 
 class QuizQuestion(models.Model):
-    generation_id = models.CharField(max_length=255, verbose_name="生成批次ID", help_text="标识AI生成题目的批次")
-    category = models.CharField(max_length=255, verbose_name="题目分类")
-    difficulty = models.CharField(max_length=50, verbose_name="题目难度")
-    question_text = models.TextField(verbose_name="题目内容")
-    option_a = models.CharField(max_length=255, verbose_name="选项A")
-    option_b = models.CharField(max_length=255, verbose_name="选项B")
-    option_c = models.CharField(max_length=255, verbose_name="选项C")
-    option_d = models.CharField(max_length=255, verbose_name="选项D")
-    correct_answer = models.CharField(max_length=10, verbose_name="正确答案")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    generation_id = models.CharField(max_length=255, verbose_name="Generation Batch ID",
+                                     help_text="Identifies the batch of AI-generated questions")
+    category = models.CharField(max_length=255, verbose_name="Question Category")
+    difficulty = models.CharField(max_length=50, verbose_name="Question Difficulty")
+    question_text = models.TextField(verbose_name="Question Text")
+    option_a = models.CharField(max_length=255, verbose_name="Option A")
+    option_b = models.CharField(max_length=255, verbose_name="Option B")
+    option_c = models.CharField(max_length=255, verbose_name="Option C")
+    option_d = models.CharField(max_length=255, verbose_name="Option D")
+    correct_answer = models.CharField(max_length=10, verbose_name="Correct Answer")
+    correct_answer_explanation = models.TextField(verbose_name="Correct Answer Explanation", blank=True, null=True,
+                                                  help_text="Explanation of why the correct answer is correct")  # Added field
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
 
     class Meta:
-        verbose_name = "题目"
-        verbose_name_plural = "题目列表"
+        verbose_name = "Quiz Question"
+        verbose_name_plural = "Quiz Questions"
 
     def __str__(self):
         return self.question_text
