@@ -61,6 +61,7 @@ submitButton.addEventListener('click', function () {
         return;
     }
 
+
     // send data to server
     // two ways to send data to server : 1. single player, 2- multiplayer
     // get type from url
@@ -68,6 +69,9 @@ submitButton.addEventListener('click', function () {
     const type = urlParams.get("type");
     if (type === "single") {
          alert("single player")
+
+
+
     } else if (type === "multi") {
         alert("multi player")
     }

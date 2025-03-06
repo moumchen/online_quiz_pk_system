@@ -1,0 +1,36 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %} Quiz Quiz! - Multiplayer {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/multiplayer_index.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="wrapper">
+        <div class="buttons">
+            <div class="create-room-button-div">
+                <img src="{% static 'images/blue_blank_button.png' %}" class="create-room-button"
+                     alt="Create Room Button">
+                <span class="button-text">Custom Quiz</span>
+            </div>
+            <div class="available-rooms-button-div">
+                <img src="{% static 'images/green_blank_button.png' %}" class="available-rooms-button"
+                     alt="Create Room Button">
+                <span class="button-text">Available Rooms</span>
+            </div>
+            <div class="history-button-div">
+                <img src="{% static 'images/orange_blank_button.png' %}" class="history-button"
+                     alt="Create Room Button">
+                <span class="button-text">My History</span>
+            </div>
+        </div>  <!-- Closed the "buttons" div -->
+    </div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/multiplayer_index.js' %}"></script>
+{% endblock %}
