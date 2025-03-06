@@ -63,17 +63,33 @@ submitButton.addEventListener('click', function () {
 
 
     // send data to server
-    // two ways to send data to server : 1. single player, 2- multiplayer
-    // get type from url
-    const urlParams = new URLSearchParams(window.location.search);
-    const type = urlParams.get("type");
-    if (type === "single") {
-         alert("single player")
+    document.getElementsByClassName("overlay")[0].classList.remove("hidden");
+    document.getElementsByClassName("generating-tip")[0].classList.remove("hidden");
+    fetch('/common/generate_quiz', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({'topic': field, "difficulty": difficulty, num_questions: number}),
+
+    }).then(response => response.json()).then(data => {
+        if (data.status === 'success') {
+            let quiz_id = data.generation_id;
+
+            // two ways to send data to server : 1. single player, 2- multiplayer
+            // get type from url
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get("type");
+            if (type === "single") {
+                alert("single player")
 
 
+            } else if (type === "multi") {
+                // redirect to multiplayer page
+                window.location.href = `/multiplayer/room?quiz=${quiz_id}`;
+            }
+        }
+    });
 
-    } else if (type === "multi") {
-        alert("multi player")
-    }
 
 });
