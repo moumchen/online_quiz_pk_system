@@ -113,4 +113,6 @@ def generate_quiz_view(request):
 
 
 def requirement(request):
-    return render(request, template_name="common/requirement.html")
+    type = request.GET.get("type")
+    context = {'quiz_type': type}
+    return render(request, template_name=f"common/requirement.html", context=context)

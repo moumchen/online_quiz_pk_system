@@ -65,6 +65,7 @@ submitButton.addEventListener('click', function () {
     // send data to server
     document.getElementsByClassName("overlay")[0].classList.remove("hidden");
     document.getElementsByClassName("generating-tip")[0].classList.remove("hidden");
+    let quiz_type = document.getElementsByClassName("quiz-type")[0].innerHTML;
     fetch('/common/generate_quiz', {
         method: 'POST',
         headers: {
@@ -77,14 +78,9 @@ submitButton.addEventListener('click', function () {
             let quiz_id = data.generation_id;
 
             // two ways to send data to server : 1. single player, 2- multiplayer
-            // get type from url
-            const urlParams = new URLSearchParams(window.location.search);
-            const type = urlParams.get("type");
-            if (type === "single") {
-                alert("single player")
-
-
-            } else if (type === "multi") {
+            if (quiz_type === "single") {
+                alert(`${quiz_id}`)
+            } else if (quiz_type === "multi") {
                 // redirect to multiplayer page
                 window.location.href = `/multiplayer/room?quiz=${quiz_id}`;
             }
