@@ -1,11 +1,26 @@
-// 当 DOM 内容加载完成后执行以下代码
 document.addEventListener('DOMContentLoaded', () => {
-    let currentQuestion = 0; // 当前问题的索引，初始为 0
-    let userQuizRecords = []; // 用于存储用户的答题记录
-    const questions = document.querySelectorAll('.question-div'); // 获取所有问题的 DOM 元素
-    let generationId = questions[0].dataset.generationId; // 获取题目的批次 ID
+    let currentQuestion = 0;
+    let userQuizRecords = [];
+    const questions = document.querySelectorAll('.question-div');
+    let generationId = questions[0].dataset.generationId;
 
-    // 为每个选项添加点击事件处理
+    function disableOptions() {
+        document.querySelectorAll('.option-box').forEach(option => {
+            option.classList.add('selected');
+            option.style.pointerEvents = 'none';
+        });
+    }
+
+    function enableOptions() {
+        document.querySelectorAll('.option-box').forEach(option => {
+            option.classList.remove('selected');
+            option.classList.remove('correct');
+            option.classList.remove('error');
+            option.style.pointerEvents = 'auto';
+        });
+    }
+
+// 为每个选项添加点击事件处理
     document.querySelectorAll('.option-box').forEach(option => {
         option.addEventListener('click', function () {
             // 如果当前选项已经被选中，则不再处理点击事件
@@ -18,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const questionId = this.parentElement.parentElement.dataset.questionId;
 
-
             // 记录用户的答题信息
             const responseTime = 1000; // 计算答题时间（秒）
             userQuizRecords.push({
@@ -29,59 +43,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 generation_id: generationId,
             });
 
+            // 清除之前选中的选项
+            document.querySelectorAll('.option-box').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'error');
+            });
+
             // 显示结果
-            this.classList.add(isCorrect ? 'correct' : 'error'); // 根据答案正确与否添加相应的类
+            this.classList.add('selected');
             if (isCorrect) {
-                // 如果答案正确，1秒后进入下一个问题
+                this.classList.add('correct');
                 setTimeout(nextQuestion, 1000);
             } else {
-                // 如果答案错误，显示正确答案
-                const correctOption = document.querySelector(`[data-option="${correctAnswer}"]`);
-                correctOption.classList.add('correct'); // 将正确答案标记为正确
-                setTimeout(nextQuestion, 1500); // 1.5秒后进入下一个问题
+                this.classList.add('error');
+                // 获取当前问题div
+                const currentQuestionDiv = questions[currentQuestion];
+                // 在当前问题div中查找正确选项
+                const correctOption = currentQuestionDiv.querySelector(`[data-option="${correctAnswer}"]`);
+                correctOption.classList.add('correct');
+                setTimeout(nextQuestion, 1500);
             }
         });
     });
 
 
-    // 定义进入下一个问题的函数
     function nextQuestion() {
-        questions[currentQuestion].style.display = 'none'; // 隐藏当前问题
-        currentQuestion++; // 增加当前问题索引
+        questions[currentQuestion].style.display = 'none';
+        currentQuestion++;
         if (currentQuestion < questions.length) {
-            questions[currentQuestion].style.display = 'block'; // 显示下一个问题
+            enableOptions(); // 重置选项样式
+            questions[currentQuestion].style.display = 'block';
         } else {
-            // 答题完成后，将答题记录发送到后端保存
             saveQuizRecords(userQuizRecords);
         }
     }
 
- function saveQuizRecords(records) {
-    fetch('/singleplayer/save_quiz_records', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({
-            records: records
+    function saveQuizRecords(records) {
+        fetch('/singleplayer/save_quiz_records', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                records: records
+            })
         })
-    })
-    .then(response => {
-        if (!response.ok) {
-            console.error("Failed to save quiz records:", response.status);
-            // 可以添加错误处理逻辑
-        }
-        // 在请求成功后跳转
-        window.location.href = `/singleplayer/report?generation_id=${generationId}`;
-    })
-    .catch(error => {
-        console.error("Error saving quiz records:", error);
-        // 可以添加错误处理逻辑
-    });
-}
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Failed to save quiz records:", response.status);
+                    // 可以添加错误处理逻辑
+                }
+                // 在请求成功后跳转
+                window.location.href = `/singleplayer/report?generation_id=${generationId}`;
+            })
+            .catch(error => {
+                console.error("Error saving quiz records:", error);
+                // 可以添加错误处理逻辑
+            });
+    }
 
-    // 获取 CSRF token 的函数
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -98,13 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-// 计时器功能
-    let timeElapsed = 0; // 记录经过的时间，初始为 0
+    let timeElapsed = 0;
     const timer = setInterval(() => {
-        timeElapsed++; // 每秒增加 1 秒
-        // 更新计时器显示
+        timeElapsed++;
         document.querySelector('.countdown').textContent =
-            `${Math.floor(timeElapsed / 60)}:${('0' + timeElapsed % 60).slice(-2)}`; // 格式化为 MM:SS
-    }, 1000); // 每 1000 毫秒（1 秒）执行一次
+            `${Math.floor(timeElapsed / 60)}:${('0' + timeElapsed % 60).slice(-2)}`;
+    }, 1000);
 
 });
