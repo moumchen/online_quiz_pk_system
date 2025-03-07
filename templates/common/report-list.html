@@ -12,30 +12,15 @@
                 <img class="report-icon" src="{% static 'images/report_icon.gif' %}" alt="report"/>
                 <p class="report-list-title">History List</p>
                 <div class="scrollable-content">
-                    <p id="1">> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <p>> 2025.02.25 Python/Django [win]</p>
-                    <!-- 更多内容... -->
+                    {% for record in records %}
+                        <a href="/singleplayer/report?generation_id={{ record.generation_id }}" class="report-link">
+                            <p id="{{ record.id }}">
+                                > {{ record.created_at|date:"Y.m.d" }} {{ record.question.title }} 
+                            </p>
+                        </a>
+                    {% empty %}
+                        <p>No records found.</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
