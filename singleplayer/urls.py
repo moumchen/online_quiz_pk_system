@@ -8,4 +8,5 @@ urlpatterns = [
     path('battle', views.battle, name='singleplayer_battle'),
     path('save_quiz_records', views.save_quiz_records),
     path('report', views.report),
+    path('report-list', views.report_list),
 ]

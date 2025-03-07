@@ -1,4 +1,5 @@
 import json
+from itertools import count
 
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -83,3 +84,17 @@ def report(request):
         'total_response_time': total_response_time,
     }
     return render(request, template_name="common/report-detail.html", context=context)
+
+
+def report_list(request):
+    all_records = UserQuizRecord.objects.all().order_by('created_at')
+    seen_generation_ids = set()
+    unique_records = []
+    for record in all_records:
+        if record.generation_id not in seen_generation_ids:
+            unique_records.append(record)
+            seen_generation_ids.add(record.generation_id)
+
+
+    context = {'records': unique_records}
+    return render(request, template_name="common/report-list.html", context=context)
