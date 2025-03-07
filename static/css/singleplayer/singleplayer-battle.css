@@ -54,17 +54,17 @@
     position: absolute;
     font-size: 20px;
     font-weight: bold;
-    width: 280px;
-    height: 55px;
+    width: 279px;
+    height: 50px;
     padding: 10px;
     box-sizing: border-box;
 }
 
 /* 选项位置 */
-.option-box[data-option="A"] { left: 150px; top: 300px; }
-.option-box[data-option="B"] { left: 550px; top: 300px; }
-.option-box[data-option="C"] { left: 150px; top: 420px; }
-.option-box[data-option="D"] { left: 550px; top: 420px; }
+.option-box[data-option="A"] { left: 149px; top: 300px; }
+.option-box[data-option="B"] { left: 547px; top: 300px; }
+.option-box[data-option="C"] { left: 149px; top: 420px; }
+.option-box[data-option="D"] { left: 547px; top: 420px; }
 
 
 /* 状态颜色 */
