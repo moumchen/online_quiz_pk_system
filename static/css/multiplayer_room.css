@@ -1,9 +1,9 @@
 @keyframes pulseAnimation {
     0% {
-        transform: scale(1);  /* initial state: original size */
+        transform: scale(1); /* initial state: original size */
     }
     50% {
-        transform: scale(1.2);  /* medium state: make size bigger up to 1.2 */
+        transform: scale(1.2); /* medium state: make size bigger up to 1.2 */
     }
     100% {
         transform: scale(1); /* end state: original size */
@@ -26,10 +26,10 @@
     font-weight: bold;
 }
 
-.tips{
+.tips {
     position: absolute;
     top: 110px;
-    right:10px;
+    right: 10px;
     color: greenyellow;
     text-shadow: 2px 2px 3px #888888;
     animation-name: pulseAnimation;
@@ -39,21 +39,27 @@
 }
 
 .title {
-    font-size: 60px;
     font-weight: bold;
-    position: absolute; /* 关键：设置 title 为绝对定位 */
-    top: 175px; /* 靠上边框 0px */
-    left: 40px; /* 靠左边框 0px */
-    /* 可以根据需要调整 top 和 left 值，以及添加 margin 等 */
-    padding: 20px; /* 可选：增加内边距，让 title 离边框稍微远一点 */
-    color: black; /* 可选：设置文字颜色，确保在背景上清晰可见 */
+    position: absolute;
+    top: 190px;
+    left: 40px;
+    color: black;
+    width: 950px;
+    height: 85px;
+    padding-left: 0;
+    /* -- make sure that the title is in the center of the span*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
 }
 
-.container{
+.container {
     position: absolute;
-    top:350px;
+    top: 350px;
     left: 60px;
-    width:900px;
+    width: 900px;
 }
 
 .container span {
@@ -72,5 +78,5 @@
     font-weight: bold;
     font-family: 'Montserrat Alternates', sans-serif;
     font-size: 30px;
-    width:130px;
+    width: 130px;
 }

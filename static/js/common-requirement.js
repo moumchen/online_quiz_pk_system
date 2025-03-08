@@ -49,7 +49,10 @@ difficultyInput.addEventListener('blur', function () {
 });
 
 
-cancelButton.addEventListener('click', resetForm); // reset form when click cancel button
+cancelButton.addEventListener('click', function (){
+    // 返回上一页
+    window.history.back();
+});
 
 submitButton.addEventListener('click', function () {
     const field = fieldInput.value;
@@ -60,7 +63,15 @@ submitButton.addEventListener('click', function () {
         alert("Please fill in all fields");
         return;
     }
-
+    // number field should be integer
+    if (isNaN(parseInt(number))) {
+        alert("Please enter a valid number");
+        return;
+    }
+    if (parseInt(number) < 1 || parseInt(number) > 10) {
+        alert("Number of questions should be between 1 and 10");
+        return;
+    }
 
     // send data to server
     document.getElementsByClassName("overlay")[0].classList.remove("hidden");
@@ -83,8 +94,10 @@ submitButton.addEventListener('click', function () {
                 window.location.href = `/singleplayer/battle?quiz_id=${quiz_id}`;
             } else if (quiz_type === "multi") {
                 // redirect to multiplayer page
-                window.location.href = `/multiplayer/room?quiz=${quiz_id}`;
+                window.location.href = `/multiplayer/create-room?quiz=${quiz_id}`;
             }
+        } else {
+            window.location.href = "/common/info?error=Generation failed, please try again";
         }
     });
 

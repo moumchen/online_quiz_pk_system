@@ -8,29 +8,40 @@
 
 {% block content %}
     <div class="wrapper">
-        <span class="tips">{{ room_tip|default:"Henry has entered the room as your opponent! Let's start!" }}</span>
-        <span class="title">{{ room_title|default:"Django Vs. Spring" }}</span>
+        <span class="tips">{{ room_tip }}</span>
+        <span class="title">{{ room_title }}</span>
         <div class="container">
-            <span class="owner">Room Owner: {{ room_owner|default:"Jaiden" }}</span>
+            <span class="owner">Room Owner: {{ room_owner }}</span>
             <span class="permission">Permission:
-                {% if permission == 'private ' %}
-                    Public <a href="#">Switch to Private</a>
-                {% else %}
-                    Private <a href="#">Switch to Public</a>
-                {% endif %}
-        </span>
-            <span class="question">Questions: {{ question|default:"10" }}</span>
-            <span class="countdown">Time: <input class="countdown_input" type="text" value="{{ countdown|default:"3:00" }}"/></span>
+                    <a class="permission-switch-link switch-to-public hidden " href="#" data-target-permission="public">Private > Switch to Public</a>
+                    <a class="permission-switch-link switch-to-private hidden" href="#" data-target-permission="private">Public > Switch to Private</a>
+            </span>
+            <span class="question">Questions: {{ question }}</span>
+            <span class="countdown">Time:
+                <input class="countdown_input" type="text" disabled value="{{ countdown }}"/>
+            </span>
             <span class="invite" style="text-align:right;">
-            <img src="{% static 'images/orange_blank_button.png' %}" alt="Invite">
-                <a href="">Invite</a>
-            <img src="{% static 'images/blue_blank_button.png' %}" alt="Quit">
-                <a href="">Quit</a>
-                <img src="{% static 'images/green_blank_button.png' %}" alt="Quit">
-                <a href="">Start</a>
-        </span>
+                <img class="invite-img-tag" src="{% static 'images/orange_blank_button.png' %}" alt="Invite"/>
+                    <a class="invite-a-tag" href="javascript:void(0);">Invite</a>
+                <img class="quit-img-tag" src="{% static 'images/blue_blank_button.png' %}" alt="Quit"/>
+                    <a class="quit-a-tag" href="javascript:void(0);">Quit</a>
+                <img class="start-img-tag hidden" src="{% static 'images/green_blank_button.png' %}" alt="Start">
+                    <a class="start-a-tag hidden" href="javascript:void(0);">Start</a>
+            </span>
         </div>
     </div>
+
+    <!-- There are some information from server to judge current state below -->
+    <input class="room_id" type="hidden" value="{{ room_id }}">
+    <input class="room_state" type="hidden" value="{{ room_state }}">
+    <input class="room_opponent" type="hidden" value="{{ room_opponent }}">
+    <input class="is_owner" type="hidden" value="{{ is_owner }}">
+    <input class="current_user_id" type="hidden" value="{{ user.id }}">
+    <input class="invite_code" type="hidden" value="{{ invite_code }}">
+    <input class="permission_hidden" type="hidden" value="{{ permission }}">
+    <form id="myForm" class="hidden">
+        {% csrf_token %}
+    </form>
 {% endblock %}
 
 
