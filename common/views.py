@@ -40,6 +40,15 @@ def login(request):
         context = {"error": "Login failed, please check your username and password!"}
         return render(request, template_name="common/info.html", context=context)
 
+def info(request):
+    """ orient to an info page to show information by using this function """
+    info = request.GET.get("info")
+    if info is None or info != '':
+        context = {"info": info}
+    error = request.GET.get("error")
+    if error is None or error != '':
+        context = {"error": error}
+    return render(request, template_name="common/info.html", context=context)
 
 def logout(request):
     user_service.logout(request)
@@ -115,4 +124,4 @@ def generate_quiz_view(request):
 def requirement(request):
     type = request.GET.get("type")
     context = {'quiz_type': type}
-    return render(request, template_name=f"common/requirement.html", context=context)
+    return render(request, template_name="common/requirement.html", context=context)

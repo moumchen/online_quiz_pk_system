@@ -8,68 +8,27 @@
 {% block content %}
     <div class="rooms-wrapper">
         <p class="page-title">Recommended Rooms</p>
-        <a href="#" class="refresh-a-tag">Refresh</a>
+        <a href="javascript:void(0);" class="refresh-a-tag">Refresh</a>
+        <a href="/multiplayer/index" class="back-a-tag">Back To Previous Page</a>
         <div class="rooms-div">
-            <div class="room1" id="1">
-                <div class="room-title-div">
-                    <span class="room-title">Django Vs. Spring</span>
-                </div>
-                <div class="room-detail">
-                    <span class="room-owner">Room Owner: Jaiden</span>
-                    <span class="room-question">Questions: 10</span>
-                    <span class="room-countdown">Time: 3:00</span>
-                </div>
-            </div>
-            <div class="room1" id="1">
-                <div class="room-title-div">
-                    <span class="room-title">Django Vs. Spring</span>
-                </div>
-                <div class="room-detail">
-                    <span class="room-owner">Room Owner: Jaiden Chen</span>
-                    <span class="room-question">Questions: 10</span>
-                    <span class="room-countdown">Time: 3:00</span>
-                </div>
-            </div>
-            <div class="room1" id="1">
-                <div class="room-title-div">
-                    <span class="room-title">Django Vs. Spring</span>
-                </div>
-                <div class="room-detail">
-                    <span class="room-owner">Room Owner: Jaiden</span>
-                    <span class="room-question">Questions: 10</span>
-                    <span class="room-countdown">Time: 3:00</span>
-                </div>
-            </div>
-            <div class="room1" id="1">
-                <div class="room-title-div">
-                    <span class="room-title">Django Vs. Spring</span>
-                </div>
-                <div class="room-detail">
-                    <span class="room-owner">Room Owner: Jaiden</span>
-                    <span class="room-question">Questions: 10</span>
-                    <span class="room-countdown">Time: 3:00</span>
-                </div>
-            </div>
-            <div class="room1" id="1">
-                <div class="room-title-div">
-                    <span class="room-title">Django Vs. Spring</span>
-                </div>
-                <div class="room-detail">
-                    <span class="room-owner">Room Owner: Jaiden</span>
-                    <span class="room-question">Questions: 10</span>
-                    <span class="room-countdown">Time: 3:00</span>
-                </div>
-            </div>
-            <div class="room1" id="1">
-                <div class="room-title-div">
-                    <span class="room-title">Django Vs. Spring</span>
-                </div>
-                <div class="room-detail">
-                    <span class="room-owner">Room Owner: Jaiden</span>
-                    <span class="room-question">Questions: 10</span>
-                    <span class="room-countdown">Time: 3:00</span>
-                </div>
-            </div>
+            {% if rooms|length == 0 %}
+                <p class="no-rooms">
+                    No rooms available at the moment. Please try again later.
+                </p>
+            {% else %}
+                {% for room in rooms %}
+                    <div class="room {{ room.class_name }}" id="{{ room.id }}">
+                        <div class="room-title-div">
+                            <span class="room-title">{{ room.room_title }}</span>
+                        </div>
+                        <div class="room-detail">
+                            <span class="room-owner">Room Owner: {{ room.room_owner }}</span>
+                            <span class="room-question">Questions: {{ room.question }}</span>
+                            <span class="room-countdown">Time: {{ room.time_limit }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

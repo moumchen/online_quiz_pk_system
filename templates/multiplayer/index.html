@@ -27,7 +27,15 @@
         </div>
     </div>
 
+    <div class="room-recovery-tip hidden">
+        You have a room that is not finished, do you want to recover it?<br/>
+        <a href="javascript:void(0);" class="recover-room">Recover </a> /
+        <a href="javascript:void(0);" class="cancel-recover-room"> Cancel </a>
+    </div>
 
+      <form id="myForm" class="hidden">
+        {% csrf_token %}
+    </form>
 {% endblock %}
 
 
