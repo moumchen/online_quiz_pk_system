@@ -127,7 +127,7 @@ function initializePermissionDisplay() {
     }
 }
 
-initializePermissionDisplay
+initializePermissionDisplay();
 
 // ------ websocket connection ------
 
@@ -154,7 +154,8 @@ function connectWebSocket() {
         return;
     }
 
-    const wsUrl = "ws://127.0.0.1:8001/ws/room/";
+    const host = window.location.host;
+    const wsUrl = `ws://${host}/ws/room/`;
 
     websocket = new WebSocket(wsUrl);
 
@@ -196,6 +197,10 @@ function connectWebSocket() {
             } else if (sub_type === "owner_left_room" && isOwner.value === 'False') {
                 alert(message['message'])
                 window.location.href = "/multiplayer/index";
+            } else if (sub_type === "start_game"){
+                websocket.close();
+                isPageUnloading = true;
+                window.location.href = `/multiplayer/battle?room_id=${roomId}`;
             }
         }
     };
@@ -266,5 +271,24 @@ document.getElementsByClassName('quit-a-tag')[0].addEventListener('click', () =>
     } else {
         console.log("WebSocket is not open, cannot send leave room message.");
         window.location.href = "/multiplayer/index";
+    }
+});
+
+document.getElementsByClassName("start-a-tag")[0].addEventListener('click', function () {
+    // judge the current user is owner
+    if (isOwner.value === 'True') {
+        // judge whether the room state is 1
+        if (roomState.value === '1') {
+            // send a message to start this game
+            const startGameMessage = {
+                "message_type": "start",
+                "room_id": roomId
+            };
+            sendMessage(JSON.stringify(startGameMessage));
+        } else {
+            alert("Please wait for the opponent to join the room.");
+        }
+    } else {
+        alert("Only the room owner can start the game.");
     }
 });

@@ -228,3 +228,19 @@
 
 );
 }
+
+
+.waiting-connect-tips,
+.waiting-finish-tips,
+.start-tips {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-weight: bold;
+    font-size: 30px;
+    color: #FFBF6B;
+    text-shadow: 1px 1px 1px black;
+    z-index:103;
+
+}

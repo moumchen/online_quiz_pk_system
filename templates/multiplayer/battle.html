@@ -11,10 +11,10 @@
         <div class="battle-header">
             <p class="battle-header-tip">Completion counts</p>
             <p class="left-username">Jaiden</p>
-            <p class="left-score">01</p>
+            <p class="left-score">00</p>
             <img class="battle-header-img vs hidden" src="{% static 'images/vs.gif' %}" alt="VS"/>
             <img class="battle-header-img clock " src="{% static 'images/clock.gif' %}" alt="VS"/>
-            <p class="right-score">03</p>
+            <p class="right-score">00</p>
             <p class="right-username">Henry</p>
             <p class="countdown">3:00</p>
         </div>
@@ -27,14 +27,34 @@
                 <p class="question-option-d">What is the capital of France?</p>
             </div>
         </div>
-        <div class="left-progress">
+        <div class="left-progress hidden">
             <p class="left-progress-info">Completion counts</p>
             <p class="left-progress-count">+1</p>
         </div>
-        <div class="right-progress">
+        <div class="right-progress hidden">
             <p class="right-progress-info">Completion counts</p>
             <p class="right-progress-count">+1</p>
         </div>
+    </div>
+
+    <div class="data-hidden hidden">
+        <input class="match_id" value="{{ match_id }}"/>
+        <input class="current_user_id" value="{{ current_user_id }}"/>
+        <input class="current_username" value="{{ current_username }}"/>
+        <input class="opponent_user_id" value="{{ opponent_user_id }}"/>
+        <input class="opponent_username" value="{{ opponent_username }}"/>
+        <input class="time_limit" value="{{ time_limit }}"/>
+        <input class="match_state" value="0"/>
+    </div>
+
+    <div class="waiting-connect-tips hidden">
+        Waiting for the opponent to connect ...
+    </div>
+     <div class="start-tips hidden">
+        Game starts in 3 seconds ...
+    </div>
+    <div class="waiting-finish-tips hidden">
+        You are too fast! Let's wait for the opponent to finish ..
     </div>
 {% endblock %}
 

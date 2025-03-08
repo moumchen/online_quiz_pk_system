@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from common.exceptions import RoomException
 from common.models import QuizQuestion
 from multiplayer.models import Room
-from multiplayer.services import room_service
+from multiplayer.services import room_service, match_service
 import json
 
 
@@ -45,12 +45,22 @@ def report_list(request):
 
 
 def report_detail(request):
-    context = {"report_title": "wangchengshizhu"}
-    return render(request, template_name="common/report-detail.html")
+    context = match_service.get_report_detail(request.user, request.GET.get("match_id"))
+    return render(request, template_name="common/report-detail.html", context=context)
 
 
 def battle(request):
-    return render(request, template_name="multiplayer/battle.html")
+    room_id = request.GET.get("room_id")
+    if room_id is None:
+        return render(request, template_name="common/info.html", context={'error': 'Room doesn\'t exist!'})
+    try:
+        context = room_service.get_match_context(request.user, room_id)
+    except RoomException as e:
+        return render(request, template_name="common/info.html", context={'error': e})
+    except Room.DoesNotExist as e:
+        return render(request, template_name="common/info.html", context={'error': "Room doesn't exist!"})
+
+    return render(request, template_name="multiplayer/battle.html", context=context)
 
 
 @login_required(login_url="/common/index?action=login")
