@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from common.exceptions import RoomException
 from common.models import QuizQuestion
-from multiplayer.models import Room
+from multiplayer.models import Room, Match
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ channel_layer = get_channel_layer()
 
 
 async def handle_leave_room_request(consumer, user, room_id):
-    """ 处理客户端主动离开房间的请求 """
+    """ handle leave room request """
     logger.info(f"Received leave room request from user {user.username} in room {room_id}")
     await leave_room_logic(consumer, user, voluntary_leave=True)  # 标记为主动离开
 
@@ -152,7 +152,6 @@ async def join_room(consumer, user, room_id):
 
 
 async def start_game(consumer, user, room_id):
-    # 判断权限, 通过后发送消息给房间的所有人, 然后跳转到游戏页面, 接下来交由另外一个BattleConsumer的ws处理
     #  room_channel_name
     room_channel_name = "room_channel_" + str(room_id)
 
@@ -178,10 +177,16 @@ async def start_game(consumer, user, room_id):
         return
 
     # send a message to all users to go to battle page
-    await channel_layer.group_send(room_channel_name, {"type": "start", "room_id": room_id})
+    await channel_layer.group_send(room_channel_name,
+                                   {"type": "information", "sub_type": "start_game", "room_id": room_id,
+                                    "target": "/multiplayer/battle?room_id=" + room_id})
     room = await database_sync_to_async(Room.objects.get)(id=room_id)
-    room.state = 1
+    room.state = 1  # set room state to playing
     await database_sync_to_async(room.save)()
+    # cache room players
+    cache.set("room_players_" + room_id, room_info['room_users'], timeout=24 * 60 * 60 * 60)
+    # remove the cache of room info
+    cache.delete(room_info_key)
     return
 
 
@@ -200,7 +205,8 @@ async def leave_room_logic(consumer, user, voluntary_leave):
         logger.warning(f"User {user.username} tried to leave room {user_room_cache} but no room info cache found.")
         return
 
-    logger.info(f"User {user.username} leaving room {user_room_cache}. Voluntary leave: {voluntary_leave}, Owner: {room_info['room_owner']}, User is owner: {room_info['room_owner'] == user.id}")
+    logger.info(
+        f"User {user.username} leaving room {user_room_cache}. Voluntary leave: {voluntary_leave}, Owner: {room_info['room_owner']}, User is owner: {room_info['room_owner'] == user.id}")
 
     if user.id in room_info["room_users"]:
         # let current consumer removed from room
@@ -210,11 +216,13 @@ async def leave_room_logic(consumer, user, voluntary_leave):
         if room_info["room_owner"] == user.id:
             if voluntary_leave:
                 # user is owner and voluntary leave, close the room
-                await database_sync_to_async(Room.objects.filter(pk=room_info["room_id"]).update)(state=2)  # close the room
+                await database_sync_to_async(Room.objects.filter(pk=room_info["room_id"]).update)(
+                    state=2)  # close the room
                 cache.delete(room_info_key)  # delete the cache of room
-                await channel_layer.group_send(room_channel_name, {"type": "information", "sub_type": "owner_left_room", "message": "The room owner exited, so this room closed now."}) # notify all users
+                await channel_layer.group_send(room_channel_name, {"type": "information", "sub_type": "owner_left_room",
+                                                                   "message": "The room owner exited, so this room closed now."})  # notify all users
                 logger.info(f"Room owner {user.username} voluntarily left room {user_room_cache}, room closed.")
-            else: # user is owner and non-voluntary leave
+            else:  # user is owner and non-voluntary leave
                 await database_sync_to_async(Room.objects.filter(pk=room_info["room_id"]).update)(state=3)
                 cache.set(room_info_key, room_info, timeout=24 * 60 * 60 * 60)  # 更新房间缓存 (状态已修改)
                 await channel_layer.group_send(room_channel_name,
@@ -222,8 +230,7 @@ async def leave_room_logic(consumer, user, voluntary_leave):
                                                 "message": "Room owner disconnected, room paused, waiting for owner to reconnect."})  # 通知其他用户
                 logger.info(
                     f"Room owner {user.username} involuntarily disconnected from room {room_info}, room paused, waiting for reconnect.")
-                # 启动定时器 (TODO: 实现定时器逻辑，例如使用 Celery 或 asyncio.sleep + background task)
-        else: # user is not owner
+        else:  # user is not owner
             if room_info["room_player_count"] <= 0:
                 cache.delete(room_info_key)
             else:
@@ -273,7 +280,6 @@ def get_room_info(user, room_id):
     context["countdown"] = room.time_limit
     context["invite_code"] = room.invite_code
     context["room_opponent"] = ''
-
 
     if room.state == 3 and room.owner_id == user.id:
         context["room_state"] = 0
@@ -357,3 +363,45 @@ def recommendation():
         print("rooms:::::::" + str(rooms.__len__()))
         return {"rooms": rooms}
     return {"rooms": []}
+
+
+def get_match_context(user, room_id):
+    room = Room.objects.get(pk=room_id)
+    if room.state == 2:
+        raise RoomException("Room has already been finished!")
+
+    # get or create a match
+    match_count = Match.objects.filter(room_id=room.id).count()
+    if match_count == 0:
+        match = Match()
+        match.room = room
+        match.question_batch_no = room.question_batch_no
+        match.owner_id = room.owner_id
+        match.save()
+    else:
+        match = Match.objects.filter(room_id=room.id).first()
+
+    if user.id != room.owner_id:
+        match.opponent_id = user.id
+        match.save()
+
+    # update the room state to 1 (playing)
+    room.state = 1
+    room.save()
+
+    room_players = cache.get("room_players_" + str(room_id))
+    # get the opponent user
+    opponent_id = None
+    for player_id in room_players:
+        if player_id != user.id:
+            opponent_id = player_id
+            break
+
+    context = {"match_id": match.id, "room_id": room_id, "time_limit": room.time_limit, "current_user_id": user.id,
+               "current_username": user.username}
+    if opponent_id is not None:
+        opponent = User.objects.get(id=opponent_id)
+        context["opponent_user_id"] = opponent_id
+        context["opponent_username"] = opponent.username
+
+    return context

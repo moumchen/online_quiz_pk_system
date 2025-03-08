@@ -21,10 +21,9 @@ class Match(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
-    winner = models.ForeignKey(User, verbose_name="winner", on_delete=models.CASCADE,
-                               related_name='won_matches')
-    opponent = models.ForeignKey(User, verbose_name="opponent", on_delete=models.CASCADE,
-                                 related_name='opponent_matches')
+    winner_id = models.CharField(max_length=10, verbose_name="winner id")
+    owner_id = models.CharField(max_length=10, verbose_name="owner id")
+    opponent_id = models.CharField(max_length=10, verbose_name="opponent id")
 
 
 class MatchAnswerDetails(models.Model):
@@ -35,6 +34,7 @@ class MatchAnswerDetails(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    choice = models.CharField(max_length=10, verbose_name="choice")
 
     class Meta:
         verbose_name = "Match Answer Details"
