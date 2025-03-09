@@ -34,23 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-let reconnecting = false; // 标记是否正在重连
-let reconnectionDelay = 1000; // 初始重连延迟 (毫秒)
-const maxReconnectionDelay = 30000; // 最大重连延迟 (毫秒)
+let reconnecting = false; // a marker to indicate if the client is currently reconnecting
+let reconnectionDelay = 1000; //  initial reconnection delay in milliseconds
+const maxReconnectionDelay = 30000; // the maximum reconnection delay in milliseconds
 let isPageUnloading = false;
 let isVoluntarilyLeaving = false;
 let answerAMessage;
 let answerBMessage;
 let answerCMessage;
 let answerDMessage;
-let initQuestionTime;
+let questionStartTime; // used to calculate the time used to answer the question
+
 
 window.onbeforeunload = function () {
     isPageUnloading = true;
 };
 
 function connectWebSocket() {
-    if (reconnecting) { // 如果正在重连，则直接返回，避免重复连接
+    if (reconnecting) { // if already reconnecting, skip
         console.log("Already reconnecting, skipping...");
         return;
     }
@@ -62,8 +63,8 @@ function connectWebSocket() {
 
     websocket.onopen = (event) => {
         console.log("WebSocket Connected");
-        reconnecting = false; // 重连成功，重置重连状态
-        reconnectionDelay = 1000; // 重置重连延迟
+        reconnecting = false; // reset reconnecting flag
+        reconnectionDelay = 1000; // reset reconnection delay
         // ------ try to join the match
         joinMessage = {"message_type": "join_in_the_match", "match_id": matchId.value, "user_id": currentUserId.value}
         sendMessage(JSON.stringify(joinMessage));
@@ -198,7 +199,7 @@ function connectWebSocket() {
                     "question_id": questionId,
                     "used_time": 0
                 }
-                initQuestionTime = timeLimit.value;
+                questionStartTime = performance.now();
 
             } else if (sub_type === "user_completion_add") {
                 if (message['user_id'] !== parseInt(currentUserId.value)) {
@@ -288,7 +289,7 @@ questionOptionB.addEventListener('click', function () {
     let usedTime;
     if (matchState.value === "1") {
         usedTime = getUsedTime();
-        answerAMessage.used_time = usedTime;
+        answerBMessage.used_time = usedTime;
         sendMessage(JSON.stringify(answerBMessage))
     } else {
         alert("The game is over")
@@ -298,7 +299,7 @@ questionOptionC.addEventListener('click', function () {
     let usedTime;
     if (matchState.value === "1") {
         usedTime = getUsedTime();
-        answerAMessage.used_time = usedTime;
+        answerCMessage.used_time = usedTime;
         sendMessage(JSON.stringify(answerCMessage))
     } else {
         alert("The game is over")
@@ -308,7 +309,7 @@ questionOptionD.addEventListener('click', function () {
     let usedTime;
     if (matchState.value === "1") {
         usedTime = getUsedTime();
-        answerAMessage.used_time = usedTime;
+        answerDMessage.used_time = usedTime;
         sendMessage(JSON.stringify(answerDMessage))
     } else {
         alert("The game is over")
@@ -316,5 +317,7 @@ questionOptionD.addEventListener('click', function () {
 });
 
 function getUsedTime() {
-    return initQuestionTime - timeLimit.value;
+    const currentTime = performance.now(); // get the current time in milliseconds
+    const elapsedTimeMilliseconds = currentTime - questionStartTime; // calculate the time used to answer the question
+    return Math.floor(elapsedTimeMilliseconds / 1000); // convert milliseconds to seconds
 }
