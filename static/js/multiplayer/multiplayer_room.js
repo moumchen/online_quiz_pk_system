@@ -22,6 +22,7 @@ const inviteImgTag = document.getElementsByClassName("invite-img-tag")[0];
 const switchToPublic = document.getElementsByClassName("switch-to-public")[0];
 const switchToPrivate = document.getElementsByClassName("switch-to-private")[0];
 const countdown = document.getElementsByClassName("countdown_input")[0];
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 function setRoomInfoByState() {
     if (isOwner.value === 'True') {
@@ -69,6 +70,21 @@ function setRoomInfoByState() {
 
 setRoomInfoByState();
 
+document.getElementsByClassName("countdown_input")[0].addEventListener('blur', function () {
+    const countdown = document.getElementsByClassName("countdown_input")[0];
+    fetch('/multiplayer/adjust_countdown', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({"room_id": roomId, "countdown": countdown.value})
+    }).then(response => response.json()).then(data => {
+        if (data.code === 200) {
+            console.log("Countdown updated.");
+        }
+    });
+});
 
 document.getElementsByClassName("invite-a-tag")[0].addEventListener('click', () => {
     invite_code = document.getElementsByClassName("invite_code")[0].value;
@@ -89,7 +105,6 @@ permissionLinks.forEach(link => {
 
         const roomId = document.querySelector(".room_id").value;
         const targetPermission = link.dataset.targetPermission;
-        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
         fetch('/multiplayer/adjust_permission', {
             method: 'POST',
@@ -197,7 +212,7 @@ function connectWebSocket() {
             } else if (sub_type === "owner_left_room" && isOwner.value === 'False') {
                 alert(message['message'])
                 window.location.href = "/multiplayer/index";
-            } else if (sub_type === "start_game"){
+            } else if (sub_type === "start_game") {
                 websocket.close();
                 isPageUnloading = true;
                 window.location.href = `/multiplayer/battle?room_id=${roomId}`;

@@ -124,3 +124,15 @@ def finish_room(request):
 def unfinished_room(request):
     room_id = room_service.unfinished_room(request.user)
     return JsonResponse({"code": 200, "success": True, "message": "success", "room_id": room_id})
+
+def adjust_countdown(request):
+    data = json.loads(request.body)
+    room_id = data.get("room_id")
+    countdown = data.get("countdown")
+    if room_id is None or room_id == "":
+        return missing_params_result("room_id")
+    if countdown is None or countdown == "":
+        return missing_params_result("countdown")
+
+    response_data = room_service.adjust_countdown(request.user, room_id, countdown)
+    return JsonResponse(response_data)

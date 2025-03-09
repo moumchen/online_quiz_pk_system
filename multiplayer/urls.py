@@ -15,4 +15,5 @@ urlpatterns = [
     path('adjust_permission', views.adjust_permission, name='adjust_permission'),
     path('finish-room', views.finish_room, name='multiplayer_finish_room'),
     path('unfinished-room', views.unfinished_room, name='multiplayer_unfinished_room'),
+    path('adjust_countdown', views.adjust_countdown, name='multiplayer_adjust_countdown'),
 ]
