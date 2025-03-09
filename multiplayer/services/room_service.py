@@ -397,7 +397,7 @@ def get_match_context(user, room_id):
             break
 
     context = {"match_id": match.id, "room_id": room_id, "time_limit": room.time_limit, "current_user_id": user.id,
-               "cur rent_username": user.username}
+               "current_username": user.username}
     if opponent_id is not None:
         opponent = User.objects.get(id=opponent_id)
         context["opponent_user_id"] = opponent_id
