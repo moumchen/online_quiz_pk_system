@@ -7,13 +7,7 @@
     position: relative;
 }
 
-.back-a-tag{
-    font-size: 30px;
-    font-weight: bold;
-    position: absolute;
-    top: 200px;
-    right: -380px;
-}
+
 .refresh-a-tag {
     font-size: 30px;
     font-weight: bold;
