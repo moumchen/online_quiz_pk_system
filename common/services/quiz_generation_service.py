@@ -4,6 +4,7 @@ import json
 import uuid
 from django.conf import settings  # Import settings
 from ..models import QuizQuestion  # Ensure you import your model (using relative import)
+from .config_service import get_cached_config_by_key
 
 
 def generate_quiz_questions(topic, difficulty, num_questions):
@@ -18,8 +19,9 @@ def generate_quiz_questions(topic, difficulty, num_questions):
     Returns:
         dict: A dictionary containing the generation_id, or an error message.
     """
-
-    api_url = "https://api.deepseek.com/chat/completions"
+    api_url = get_cached_config_by_key('api_url').value
+    sk = get_cached_config_by_key('sk').value
+    # api_url = "https://api.deepseek.com/chat/completions"
     generation_id = str(uuid.uuid4())  # Generate a unique batch ID
 
     # Construct the title
@@ -39,7 +41,7 @@ def generate_quiz_questions(topic, difficulty, num_questions):
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer sk-4288fad1b97c408d810cde6d35ce4c99"  # Add Authorization header
+        "Authorization": "Bearer " + sk  # Add Authorization header
     }
 
     try:

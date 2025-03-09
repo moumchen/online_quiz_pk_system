@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userQuizRecords = [];
     const questions = document.querySelectorAll('.question-div');
     let generationId = questions[0].dataset.generationId;
+    let questionStartTime; // 用于记录问题开始时间
 
     function disableOptions() {
         document.querySelectorAll('.option-box').forEach(option => {
@@ -20,6 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function startQuestionTimer() {
+        questionStartTime = new Date();
+    }
+
+    function calculateResponseTime() {
+        const endTime = new Date();
+        return (endTime - questionStartTime) / 1000; // 返回秒数
+    }
+
     // 为每个选项添加点击事件处理
     document.querySelectorAll('.option-box').forEach(option => {
         option.addEventListener('click', function () {
@@ -33,8 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const questionId = this.parentElement.parentElement.dataset.questionId;
 
+            // 计算答题时间
+            const responseTime = calculateResponseTime();
+
             // 记录用户的答题信息
-            const responseTime = 1000; // 计算答题时间（秒）
             userQuizRecords.push({
                 question_id: questionId,
                 selected_answer: this.dataset.option,
@@ -71,22 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestion < questions.length) {
             enableOptions(); // 重置选项样式
             questions[currentQuestion].style.display = 'block';
-
-            // 调整题目和选项的字体大小
-            adjustTitleFontSize(document.getElementsByClassName("question-title")[0]); // 调整题目字体大小
-            document.querySelectorAll('.option-box').forEach(option => {
-                adjustTitleFontSize(option); // 调整选项字体大小
-            });
+            startQuestionTimer(); // 开始下一个问题的计时
         } else {
             saveQuizRecords(userQuizRecords);
         }
     }
-
-    // 初始化时调整第一个问题的字体大小
-    adjustTitleFontSize(document.getElementsByClassName("question-title")[0]); // 调整题目字体大小
-    document.querySelectorAll('.option-box').forEach(option => {
-        adjustTitleFontSize(option); // 调整选项字体大小
-    });
 
     function saveQuizRecords(records) {
         fetch('/singleplayer/save_quiz_records', {
@@ -134,4 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.countdown').textContent =
             `${Math.floor(timeElapsed / 60)}:${('0' + timeElapsed % 60).slice(-2)}`;
     }, 1000);
+
+    // 初始化第一个问题的计时器
+    startQuestionTimer();
 });
