@@ -13,9 +13,13 @@
                 <p class="report-list-title">History List</p>
                 <div class="scrollable-content">
                     {% for record in records %}
-                        <a href="/singleplayer/report?generation_id={{ record.generation_id }}" class="report-link">
+                        {% if is_pvp|default:'0' == '0' %}
+                            <a href="/singleplayer/report?generation_id={{ record.generation_id }}" class="report-link">
+                        {% else %}
+                            <a href="/multiplayer/report-detail?generation_id={{ record.generation_id }}" class="report-link">
+                        {% endif %}
                             <p id="{{ record.id }}">
-                                > {{ record.created_at|date:"Y.m.d" }} {{ record.question.title }} 
+                                > {{ record.created_at|date:"Y.m.d" }} {{ record.question.title }}
                             </p>
                         </a>
                     {% empty %}

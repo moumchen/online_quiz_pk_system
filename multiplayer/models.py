@@ -21,9 +21,9 @@ class Match(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
-    winner_id = models.CharField(max_length=10, verbose_name="winner id")
-    owner_id = models.CharField(max_length=10, verbose_name="owner id")
-    opponent_id = models.CharField(max_length=10, verbose_name="opponent id")
+    winner_id = models.IntegerField(max_length=10, verbose_name="winner id", default=0)
+    owner_id = models.IntegerField(max_length=10, verbose_name="owner id", default=0)
+    opponent_id = models.IntegerField(max_length=10, verbose_name="opponent id",default=0)
 
 
 class MatchAnswerDetails(models.Model):

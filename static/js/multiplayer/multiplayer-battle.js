@@ -156,11 +156,11 @@ function connectWebSocket() {
                 optionB = question['option_b']
                 optionC = question['option_c']
                 optionD = question['option_d']
-                questionTitle.innerHTML = title;
-                questionOptionA.innerHTML = optionA;
-                questionOptionB.innerHTML = optionB;
-                questionOptionC.innerHTML = optionC;
-                questionOptionD.innerHTML = optionD;
+                questionTitle.textContent = title;
+                questionOptionA.textContent = optionA;
+                questionOptionB.textContent = optionB;
+                questionOptionC.textContent = optionC;
+                questionOptionD.textContent = optionD;
                 adjustTitleFontSize("questionTitle");
                 adjustTitleFontSize("questionOptionA");
                 adjustTitleFontSize("questionOptionB");

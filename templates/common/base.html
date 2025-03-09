@@ -15,50 +15,53 @@
     {% endblock %}
 </head>
 <body>
-    <!-- LOGO Area Beginning-->
-    <div class="logo-container">
-        <img src="{% static 'images/logo.png' %}" alt="Quiz Logo" class="logo-image">
+<!-- LOGO Area Beginning-->
+<div class="logo-container">
+    <img src="{% static 'images/logo.png' %}" alt="Quiz Logo" class="logo-image">
+</div>
+<!-- LOGO Area End-->
+
+<!-- tip -->
+<div class="base-tip hidden">
+</div>
+
+<!-- Login Info Area Beginning-->
+<div class="login-info">
+    <!-- 返回上一级-->
+    <p><a href='javascript:history.back()'> >Back to previous page< </a></p>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}!</p>
+        <a href="/common/logout">Logout</a>
+    {% else %}
+        <a class="login_tag">Login</a>
+        <a class="register_tag">Sign Up</a>
+    {% endif %}
+</div>
+<!-- Login Info Area End-->
+
+<!-- Content Area Beginning -->
+{% block content %}
+    {# content here #}
+{% endblock %}
+<!-- Content Area End-->
+
+<!-- Hidden Overlay -->
+<div id="overlay" class="overlay hidden"></div>
+<!-- Hidden Overlay End-->
+
+<!-- Footer Area beginning-->
+<div class="my-footer">
+    <p>Copyright @ Yanqian Chen & Cheng Wang 2025</p>
+    <div class="footer-imgs">
+        <img src="{% static 'images/footer-img.png' %}" class="footer-img"
+             alt="Copyright @ Yanqian Chen & Cheng Wang 2025">
     </div>
-    <!-- LOGO Area End-->
+</div>
+<!-- Footer Area End-->
 
-    <!-- tip -->
-    <div class="base-tip hidden">
-    </div>
-
-    <!-- Login Info Area Beginning-->
-    <div class="login-info">
-        {% if user.is_authenticated %}
-            <p>Welcome, {{ user.username }}!</p>
-            <a href="/common/logout">Logout</a>
-        {% else %}
-            <a class="login_tag">Login</a>
-            <a class="register_tag">Register</a>
-        {% endif %}
-    </div>
-    <!-- Login Info Area End-->
-
-    <!-- Content Area Beginning -->
-    {% block content %}
-        {# content here #}
-    {% endblock %}
-    <!-- Content Area End-->
-
-    <!-- Hidden Overlay -->
-    <div id="overlay" class="overlay hidden"></div>
-    <!-- Hidden Overlay End-->
-
-    <!-- Footer Area beginning-->
-    <div class="my-footer">
-        <p>Copyright @ Yanqian Chen & Cheng Wang 2025</p>
-        <div class="footer-imgs">
-            <img src="{% static 'images/footer-img.png' %}" class="footer-img" alt="Copyright @ Yanqian Chen & Cheng Wang 2025">
-        </div>
-    </div>
-    <!-- Footer Area End-->
-
-    <script src="{% static 'js/base.js' %}"></script>
-    {% block scripts %}
-        {# additional javascript scripts here #}
-    {% endblock %}
+<script src="{% static 'js/base.js' %}"></script>
+{% block scripts %}
+    {# additional javascript scripts here #}
+{% endblock %}
 </body>
 </html>
