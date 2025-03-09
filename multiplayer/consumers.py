@@ -92,7 +92,7 @@ class MatchConsumer(AsyncWebsocketConsumer):
             await self.close()
 
     async def disconnect(self, close_code):
-        await match_service.handle_disconnect(self, self.scope['user'])
+        await match_service.handle_disconnect(self.scope['user'])
 
     async def receive(self, text_data):
         await match_service.handle_message(self, self.scope['user'], text_data)

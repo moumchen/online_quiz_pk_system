@@ -1,7 +1,6 @@
 import json
 import logging
 
-from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 from django.core.cache import cache
@@ -22,7 +21,7 @@ USER_QUESTION_CACHE_PREFIX = "user_questions_send_"
 MATCH_FINISHED_PREFIX = "match_finished_"
 
 
-async def handle_disconnect(consumer, user):
+async def handle_disconnect(user):
     """ handle disconnect """
     user_match_cache_key = USER_MATCH_CHANNEL_PREFIX + str(user.id)
     match_id = cache.get(user_match_cache_key)
@@ -46,7 +45,7 @@ async def join_in_the_match(consumer, user, match_id):
 
     message_payload = {"type": "information", "sub_type": "user_joined", "user_id": user.id, "username": user.username,
                        "message": f"User {user.username} joined the match."}
-    print(f"准备广播 user_joined 消息到 group: {match_channel_name}, 消息内容: {message_payload}")  # 添加日志
+    logger.log(f"send message user_joined to group: {match_channel_name}, content: {message_payload}")
 
     #  notify other users in the match
     await channel_layer.group_send(
@@ -54,7 +53,7 @@ async def join_in_the_match(consumer, user, match_id):
         {"type": "information", "sub_type": "user_joined", "user_id": user.id, "username": user.username,
          "message": f"User {user.username} joined the match."}
     )
-    print(f"已广播 user_joined 消息到 group: {match_channel_name}")  # 添加日志
+    logger.log(f"send message user_joined to group: {match_channel_name}")
 
 
 async def generate_question(question):
@@ -63,7 +62,7 @@ async def generate_question(question):
     return question_result
 
 
-async def start_match_game(consumer, user, match_id):
+async def start_match_game(user, match_id):
     """ start the match game """
     match = await database_sync_to_async(Match.objects.get)(id=match_id)
     room = await database_sync_to_async(Room.objects.get)(id=match.room_id)
@@ -87,7 +86,7 @@ async def start_match_game(consumer, user, match_id):
     )
 
 
-async def handle_time_over(consumer, user, match_id):
+async def handle_time_over(user, match_id):
     """ handle the time over """
     # put the user into the finished user list
     finished_users = cache.get(MATCH_FINISHED_PREFIX + str(match_id))
@@ -111,7 +110,7 @@ async def handle_time_over(consumer, user, match_id):
         cache.delete(QUESTION_CACHE_PREFIX + str(match_id))
 
 
-async def handle_answer(consumer, user, match_id, answer_data):
+async def handle_answer(user, match_id, answer_data):
     """ handle the answer """
     choice = answer_data['choice']
     question_id = answer_data['question_id']
@@ -184,7 +183,7 @@ async def handle_answer(consumer, user, match_id, answer_data):
 
 
 async def handle_message(consumer, user, text_data):
-    """ 处理 MatchConsumer 收到的消息 """
+    """ hanle the message received from the customer """
     data_json = json.loads(text_data)
     message_type = data_json['message_type']
     match_id = data_json['match_id']
@@ -194,11 +193,11 @@ async def handle_message(consumer, user, text_data):
     if message_type == 'join_in_the_match':
         await join_in_the_match(consumer, user, match_id)
     elif message_type == 'start_game':
-        await start_match_game(consumer, user, match_id)
+        await start_match_game(user, match_id)
     elif message_type == 'answer':
-        await handle_answer(consumer, user, match_id, data_json)
+        await handle_answer(user, match_id, data_json)
     elif message_type == 'time_over':
-        await handle_time_over(consumer, user, match_id)
+        await handle_time_over(user, match_id)
 
 
 def get_report_detail(user, match_id, generation_id):
@@ -271,7 +270,8 @@ def get_report_list(user):
         notice: the logic of this function is not perfect, it should be improved
     """
     # temporary solution
-    matches = list(Match.objects.filter(Q(owner_id=user.id) | Q(opponent_id=user.id)).values('question_batch_no').distinct())
+    matches = list(Match.objects.filter(Q(owner_id=user.id)
+                                        | Q(opponent_id=user.id)).values('question_batch_no').distinct())
     match_list = []
     for match in matches:
         match_list.append(match['question_batch_no'])

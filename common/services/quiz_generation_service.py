@@ -2,7 +2,6 @@
 import requests
 import json
 import uuid
-from django.conf import settings  # Import settings
 from ..models import QuizQuestion  # Ensure you import your model (using relative import)
 from .config_service import get_cached_config_by_key
 

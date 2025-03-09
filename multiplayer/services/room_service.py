@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def generate_unique_invite_code():
+    """ generate a unique invite code """
     while True:
         code = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
         if not Room.objects.filter(invite_code=code).exists():
@@ -73,7 +74,7 @@ channel_layer = get_channel_layer()
 async def handle_leave_room_request(consumer, user, room_id):
     """ handle leave room request """
     logger.info(f"Received leave room request from user {user.username} in room {room_id}")
-    await leave_room_logic(consumer, user, voluntary_leave=True)  # 标记为主动离开
+    await leave_room_logic(consumer, user, voluntary_leave=True)  #  voluntary leave is a marker that user leave room by himself
 
 
 async def handle_message(consumer, user, text_data):
@@ -92,6 +93,7 @@ async def handle_message(consumer, user, text_data):
 
 
 async def join_room(consumer, user, room_id):
+    """ handle join room request """
     # set a lock to room
     lock_key = "room_lock_" + str(room_id)
     if not cache.add(lock_key, True, timeout=60):
@@ -191,7 +193,7 @@ async def start_game(consumer, user, room_id):
 
 
 async def leave_room_logic(consumer, user, voluntary_leave):
-    # 当用户浏览器关闭的时候, disconnect断开, 将用户移除出layer, 如果用户是房主, 发送给在房间的用户结束房间.
+    """ when user leave room, remove user from room layer, if user is owner, send message to all users in room """
     user_room_cache_key = "user_room_cache_" + str(user.id)
     user_room_cache = cache.get(user_room_cache_key)
     if user_room_cache is None:
@@ -328,9 +330,9 @@ def adjust_permission(user, room_id, target_state):
 
 
 async def handle_disconnect(consumer, user):
-    """ 处理非主动断开连接 """
+    """ handle disconnect """
     logger.info(f"WebSocket disconnect detected for user {user.username}, handling as non-voluntary leave.")
-    await leave_room_logic(consumer, user, voluntary_leave=False)  # 标记为非主动离开
+    await leave_room_logic(consumer, user, voluntary_leave=False)  #
 
 
 def unfinished_room(user):
