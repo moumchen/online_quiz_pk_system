@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
-from common.exceptions import RoomException
+from common.exceptions import RoomException, MatchException
 from common.models import QuizQuestion
 from multiplayer.models import Room
 from multiplayer.services import room_service, match_service
@@ -40,12 +40,18 @@ def recommendation(request):
     return render(request, template_name="multiplayer/recommendation.html", context=context)
 
 
+@login_required(login_url="/common/index?action=login")
 def report_list(request):
-    return render(request, template_name="common/report-list.html")
+    context = match_service.get_report_list(request.user)
+    return render(request, template_name="common/report-list.html", context=context)
 
 
 def report_detail(request):
-    context = match_service.get_report_detail(request.user, request.GET.get("match_id"))
+    try:
+        context = match_service.get_report_detail(request.user, request.GET.get("match_id"), request.GET.get("generation_id"))
+    except MatchException as e:
+        return render(request, template_name="common/info.html", context={'error': e})
+
     return render(request, template_name="common/report-detail.html", context=context)
 
 

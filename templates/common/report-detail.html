@@ -9,8 +9,11 @@
     <div class="report-list-wrapper">
         <div class="report-paper-div">
             <div class="report-list-paper">
-                <img class="report-icon " src="{% static 'images/report_icon.gif' %}" alt="report"/>
-                <img class="report-icon hidden" src="{% static 'images/you_win.gif' %}" alt="report"/>
+                {% if is_winner|default:'0' == '0' %}
+                    <img class="report-icon" src="{% static 'images/report_icon.gif' %}" alt="report"/>
+                {% else %}
+                    <img class="report-icon" src="{% static 'images/you_win.gif' %}" alt="report"/>
+                {% endif %}
                 <p class="report-list-title">{{ report_title|default:"Quiz Report" }}</p>
                 <div class="scrollable-content">
                     <div class="report-detail">
@@ -18,6 +21,15 @@
                         <b>Total Questions:</b> {{ total_questions }} |
                         <b>Correct Answers:</b> {{ correct_answers }} |
                         <b>Total Time Spent:</b> {{ total_response_time }} seconds
+                        {% if is_match == '1' %}
+                            <b>| Correct number of your opponent: {{ opponent_correct_answers }}</b>
+                            <b>| Total Time of your opponent: {{ opponent_total_response_time }}</b>
+                            {% if is_winner == '1' %}
+                                <b style="color: green">| {{ win_or_lose }}</b>
+                            {% else %}
+                                <b style="color: red">| {{ win_or_lose }}</b>
+                            {% endif %}
+                        {% endif %}
                     </div>
 
                     <div class="questions-details">

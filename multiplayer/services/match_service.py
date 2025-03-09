@@ -6,6 +6,7 @@ from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 from django.core.cache import cache
 
+from common.exceptions import MatchException
 from common.models import QuizQuestion, UserQuizRecord
 from multiplayer.models import Match, Room
 
@@ -199,11 +200,19 @@ async def handle_message(consumer, user, text_data):
         await handle_time_over(consumer, user, match_id)
 
 
-def get_report_detail(user, match_id):
-    match = Match.objects.get(pk=match_id)
+def get_report_detail(user, match_id, generation_id):
+    match = None
+    if match_id:
+        match = Match.objects.get(pk=match_id)
+    elif generation_id:
+        match = Match.objects.get(question_batch_no=generation_id)
+    else:
+        raise MatchException("Match not found!")
+
     questions = list(QuizQuestion.objects.filter(generation_id=match.question_batch_no))
     records = list(UserQuizRecord.objects.filter(user_id=user.id, generation_id=match.question_batch_no))
     context = {}
+    context['is_match'] = '1'
     context['report_title'] = "Match Report"
     context['total_questions'] = len(questions)
     context['correct_answers'] = sum([1 for record in records if record.is_correct])
@@ -218,5 +227,52 @@ def get_report_detail(user, match_id):
                   'correct_answer_explanation': record.question.correct_answer_explanation}
         details.append(detail)
 
+    # get the details of the opponent
+    opponent = None;
+    if match.owner_id == user.id:
+        opponent = match.opponent_id
+    else:
+        opponent = match.owner_id
+    opponent_details = list(UserQuizRecord.objects.filter(user_id=opponent, generation_id=match.question_batch_no))
+    # calculate the opponent's correct answers and total response time
+    context['opponent_correct_answers'] = sum([1 for record in opponent_details if record.is_correct])
+    context['opponent_total_response_time'] = sum([record.response_time for record in opponent_details])
+    # calculate who is winner
+    match_winner_id = None;
+    if match.winner_id != 0:
+        match_winner_id = match.winner_id
+    else:
+        if context['correct_answers'] > context['opponent_correct_answers']:
+            match_winner_id = user.id
+        elif context['correct_answers'] < context['opponent_correct_answers']:
+            match_winner_id = opponent
+        else:
+            if context['total_response_time'] < context['opponent_total_response_time']:
+                match_winner_id = user.id
+            else:
+                match_winner_id = opponent
+        match.winner_id = match_winner_id
+        match.save()
+
+    if match_winner_id == user.id:
+        context['is_winner'] = '1'
+        context['win_or_lose'] = 'You are WINNER!'
+    else:
+        context['is_winner'] = '0'
+        context['win_or_lose'] = 'Opps, You lost the game'
+
     context['report_data'] = details
+    return context
+
+
+def get_report_list(user):
+    all_records = UserQuizRecord.objects.filter(user_id=user.id).order_by('created_at')
+    seen_generation_ids = set()
+    unique_records = []
+    for record in all_records:
+        if record.generation_id not in seen_generation_ids:
+            unique_records.append(record)
+            seen_generation_ids.add(record.generation_id)
+
+    context = {'records': unique_records, "is_pvp": '1'}
     return context

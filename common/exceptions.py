@@ -18,3 +18,12 @@ class RoomException(Exception):
 
     def __str__(self):
         return self.message
+
+class MatchException(Exception):
+    ''' This custom exception will be used when the match is not defined in database '''
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return self.message
