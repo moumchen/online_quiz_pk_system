@@ -71,10 +71,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestion < questions.length) {
             enableOptions(); // 重置选项样式
             questions[currentQuestion].style.display = 'block';
+
+            // 调整题目和选项的字体大小
+            adjustTitleFontSize(document.getElementsByClassName("question-title")[0]); // 调整题目字体大小
+            document.querySelectorAll('.option-box').forEach(option => {
+                adjustTitleFontSize(option); // 调整选项字体大小
+            });
         } else {
             saveQuizRecords(userQuizRecords);
         }
     }
+
+    // 初始化时调整第一个问题的字体大小
+    adjustTitleFontSize(document.getElementsByClassName("question-title")[0]); // 调整题目字体大小
+    document.querySelectorAll('.option-box').forEach(option => {
+        adjustTitleFontSize(option); // 调整选项字体大小
+    });
 
     function saveQuizRecords(records) {
         fetch('/singleplayer/save_quiz_records', {

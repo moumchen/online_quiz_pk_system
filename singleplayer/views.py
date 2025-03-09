@@ -112,6 +112,5 @@ def report_list(request):
             unique_records.append(record)
             seen_generation_ids.add(record.generation_id)
 
-
     context = {'records': unique_records}
     return render(request, template_name="common/report-list.html", context=context)
