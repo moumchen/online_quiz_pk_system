@@ -1,0 +1,142 @@
+@keyframes pulseAnimation {
+    0% {
+        transform: scale(1); /* initial state: original size */
+    }
+    50% {
+        transform: scale(1.2); /* medium state: make size bigger up to 1.2 */
+    }
+    100% {
+        transform: scale(1); /* end state: original size */
+    }
+}
+
+.generating-tip {
+    position: absolute;
+    z-index: 105; /* make sure the layer is higher than the overlay */
+    color: #FFBF6B;
+    text-shadow: 1px 1px 1px #000000;
+    font-size: 50px;
+    font-weight: bold;
+    animation-name: pulseAnimation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+.overlay {
+    z-index: 104; /* make sure the layer is higher than the requirement-div */
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+}
+
+/* --- login div --- */
+.requirement-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    z-index: 101; /* make sure the layer is higher than the overlay */
+}
+
+.requirement-div img {
+    height: 100px;
+    width: auto;
+}
+
+.login-buttons-div {
+    display: flex; /* Enable Flexbox layout for the container */
+    justify-content: center; /* Center the buttons horizontally */
+}
+
+.login-buttons-div img {
+    height: auto;
+    width: 100%;
+}
+
+.field-question-div,
+.difficulty-question-div,
+.number-question-div {
+    position: relative;
+    display: block;
+}
+
+.field-question-text,
+.difficulty-question-text,
+.number-question-text {
+    position: absolute; /* 绝对定位，将文字放在气泡图片之上 */
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    color: black; /* 或者您想要的文字颜色 */
+    font-size: 20px; /* 或者您想要的文字大小 */
+    /* ... 其他文字样式 ... */
+}
+
+.field-reply-div,
+.difficulty-reply-div,
+.number-reply-div {
+    position: relative;
+    display: inline-block;
+}
+
+.field-input,
+.difficulty-input,
+.number-input {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    background-color: transparent; /* 设置背景色为透明，关键！ */
+    border: none; /* 移除输入框边框 */
+    outline: none; /* 移除输入框 focus 时的外轮廓线 */
+    padding: 10px; /* 根据需要调整内边距，使输入框在气泡内合适的位置 */
+    font-size: 20px; /* 或者您想要的输入框文字大小 */
+    color: white; /* 或者您想要的输入框文字颜色 */
+    font-family: 'Montserrat Alternates', sans-serif;
+    width: 100%; /* 设置宽度为 100%，占据父元素全部宽度，关键！ */
+    box-sizing: border-box; /* 确保 padding 和 border 不会撑大输入框，关键！ */
+    height: 100%; /* 可选：如果需要输入框高度也充满父元素，可以添加 */
+    display: block; /* 可选：确保输入框是块级元素，填充宽度 */
+}
+
+
+/* --- 按钮容器样式 --- */
+.button-container {
+    position: relative; /* 设置相对定位，作为文字绝对定位的参照物 */
+    display: block; /* 或者 display: block;  根据你的布局需求选择 */
+    /* 其他你可能需要的容器样式，例如 margin, padding 等 */
+}
+
+/* --- 按钮文字样式 --- */
+.button-text {
+    position: absolute; /* 关键：绝对定位 */
+    top: 50%; /* 垂直方向居中 */
+    left: 50%; /* 水平方向居中 */
+    transform: translate(-50%, -50%); /* 使用 transform 进一步精确居中 */
+    color: white; /* 文字颜色，根据你的按钮图片调整 */
+    font-size: 30px; /* 文字大小，根据需要调整 */
+    font-weight: bold; /* 文字加粗，可选 */
+    text-shadow: 2px 2px 4px #000000; /* 可选：添加文字阴影，增加可读性 */
+    pointer-events: none; /* 重要：让文字不遮挡鼠标事件，点击事件穿透到图片 */
+    white-space: nowrap; /* 防止文字换行，如果需要单行文字 */
+}
+
+/* --- 按钮图片 hover 效果 (保持不变) --- */
+.submit-button:hover,
+.cancel-button:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* --- Switch tag ---*/
+.switch_a_tag {
+    color: dodgerblue;
+    font-weight: bold;
+}
+

@@ -1,0 +1,85 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #87CEEB; /* 天蓝色背景 */
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-style: normal;
+    display: flex; /* 使用 Flexbox 布局 body */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    min-height: 100vh; /* 确保 body 至少占据整个视口高度 */
+    text-align: center; /* 文本居中 */
+    color: #333; /* 文字颜色 */
+}
+
+/* --- common style --- */
+.hidden {
+    display: none !important;
+}
+
+
+/* --- Logo Area--- */
+
+.logo-container {
+    display: flex;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}
+
+.logo-image {
+    max-width: 40%; /* Logo max width */
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* --- Login Info Area--- */
+.login-info {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.login-info a {
+    color: blue;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.login-info a:hover {
+    color: red;
+    cursor: pointer;
+}
+
+
+/* --- Footer Area--- */
+.my-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+    font-weight: bold;
+}
+
+.footer-imgs {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+}
+
+
+/* --- Blur --- */
+.overlay {
+    position: fixed; /* fix position and cover all screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* half transparency */
+    backdrop-filter: blur(3px); /* add a blur effect */
+    z-index: 100; /* make sure the layer is the highest */
+}
