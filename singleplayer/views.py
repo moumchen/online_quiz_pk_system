@@ -2,10 +2,12 @@ import json
 from itertools import count
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from multiplayer.models import Match
 from singleplayer.services import single_service
 from common.models import UserQuizRecord, QuizQuestion
 
@@ -87,11 +89,26 @@ def report(request):
 
 
 def report_list(request):
-    all_records = UserQuizRecord.objects.all().order_by('created_at')
+    """ get the report list
+            notice: the logic of this function is not perfect, it should be improved
+        """
+    # temporary solution
+    """ get the report list
+           notice: the logic of this function is not perfect, it should be improved
+       """
+    # temporary solution
+    user = request.user
+    matches = list(
+        Match.objects.filter(Q(owner_id=user.id) | Q(opponent_id=user.id)).values('question_batch_no').distinct())
+    match_list = []
+    for match in matches:
+        match_list.append(match['question_batch_no'])
+
+    all_records = UserQuizRecord.objects.filter(user_id=user.id).order_by('created_at')
     seen_generation_ids = set()
     unique_records = []
     for record in all_records:
-        if record.generation_id not in seen_generation_ids:
+        if record.generation_id not in seen_generation_ids and record.generation_id not in match_list:
             unique_records.append(record)
             seen_generation_ids.add(record.generation_id)
 

@@ -5,6 +5,7 @@ from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 from django.core.cache import cache
+from django.db.models import Q
 
 from common.exceptions import MatchException
 from common.models import QuizQuestion, UserQuizRecord
@@ -266,11 +267,21 @@ def get_report_detail(user, match_id, generation_id):
 
 
 def get_report_list(user):
+    """ get the report list
+        notice: the logic of this function is not perfect, it should be improved
+    """
+    # temporary solution
+    matches = list(Match.objects.filter(Q(owner_id=user.id) | Q(opponent_id=user.id)).values('question_batch_no').distinct())
+    match_list = []
+    for match in matches:
+        match_list.append(match['question_batch_no'])
+
+
     all_records = UserQuizRecord.objects.filter(user_id=user.id).order_by('created_at')
     seen_generation_ids = set()
     unique_records = []
     for record in all_records:
-        if record.generation_id not in seen_generation_ids:
+        if record.generation_id not in seen_generation_ids and record.generation_id in match_list:
             unique_records.append(record)
             seen_generation_ids.add(record.generation_id)
 
