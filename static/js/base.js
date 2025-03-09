@@ -1,3 +1,7 @@
+document.getElementsByClassName("logo-image")[0].addEventListener('click', function () {
+    // back to the home page
+    window.location.href = "/";
+});
 
 // -------- Hide login info on certain pages | beginning --------
 // if any page don't want to show login info, add the page name to the list
@@ -6,7 +10,7 @@ HIDDEN_LOGIN_INFO_PAGES = ['info_page']
 
 function isHiddenLoginInfoPage() {
     let flag = false;
-    HIDDEN_LOGIN_INFO_PAGES.forEach( page => {
+    HIDDEN_LOGIN_INFO_PAGES.forEach(page => {
         if (document.getElementById(page) !== null) {
             flag = true;
         }
@@ -47,3 +51,28 @@ function adjustTitleFontSize(className) {
 }
 
 // -------- dynamically adjust the size of font | end --------
+
+// -------- calculate dpi ------
+document.addEventListener("DOMContentLoaded", function () {
+    const minWidth = 1900;
+
+    const currentWidth = window.innerWidth;
+    const currentHeight = window.innerHeight;
+
+    console.log("currentWidth: " + currentWidth);
+    console.log("currentHeight: " + currentHeight);
+    if (currentWidth >= minWidth) {
+        return;
+    }
+
+    let tip = document.getElementsByClassName("base-tip")[0];
+    tip.classList.remove("hidden");
+
+    tip.innerHTML = "Your screen resolution is too low, please use your browser Settings to zoom to 90% or lower for better presentation :) ";
+    // every 5 seconds show a tip
+    setTimeout(function () {
+        tip.classList.add("hidden");
+    }, 5000);
+
+});
+

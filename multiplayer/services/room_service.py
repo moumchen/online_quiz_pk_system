@@ -360,7 +360,6 @@ def recommendation():
             room.room_title = questions.first().title
             room.room_owner = room.owner.username
             room.class_name = random.choice(room_classes)
-        print("rooms:::::::" + str(rooms.__len__()))
         return {"rooms": rooms}
     return {"rooms": []}
 
