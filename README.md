@@ -77,7 +77,7 @@ online_quiz_pk_system/
 ![AI-generating.gif](readme/AI-generating.gif)
 - Single Player Mode
 ps: Questions are too easy because I made AI generate easy math questions to test -_-"
-- [single-player.gif](readme/single-player.gif)
+![single-player.gif](readme/single.gif)
 - Multiplayer Index Page
 ![img.png](readme/multiplayer-index.png)
 - Multiplayer Room Page
