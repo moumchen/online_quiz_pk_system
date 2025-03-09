@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'online_quiz_pk_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'quizquiz',
+        'NAME': 'quiz',
         'USER': 'root',
-        'PASSWORD': 'wangc958',
-        'HOST': '54.79.20.77',
+        'PASSWORD': 'cyq967240',
+        'HOST': '127.0.0.1',
         'PORT': '3306'
     }
 }
@@ -141,7 +141,7 @@ CHANNEL_LAYERS = {
         # "BACKEND": "channels.layers.InMemoryChannelLayer" # IN Memory
         "BACKEND": "channels_redis.core.RedisChannelLayer", # Redis Channel Layer (生产环境推荐)
         "CONFIG": {
-            "hosts": [f"redis://:wangc958@54.79.20.77:6379/0"],
+            "hosts": [("localhost", 6379)], # Redis 服务器地址
         },
     },
 }
@@ -149,7 +149,7 @@ CHANNEL_LAYERS = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://:wangc958@54.79.20.77:6379/10",  # 添加密码
+        "LOCATION": "redis://127.0.0.1:6379/10",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
