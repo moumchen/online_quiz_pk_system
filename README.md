@@ -56,9 +56,8 @@ online_quiz_pk_system/
 │   └── views.py # Views
 ├── online_quiz_pk_system/
 │   └── readme
-├── singleplayer/
+├── singleplayer/ # Singleplayer functionalities
 ├── static/
-├── staticfiles/
 ├── templates/
 ├── venv/
 ├── .gitattributes
@@ -76,7 +75,6 @@ online_quiz_pk_system/
 - AI Generating Questions
 ![AI-generating.gif](readme/AI-generating.gif)
 - Single Player Mode
-ps: Questions are too easy because I made AI generate easy math questions to test -_-"
 ![single-player.gif](readme/single.gif)
 - Multiplayer Index Page
 ![img.png](readme/multiplayer-index.png)
