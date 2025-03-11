@@ -57,7 +57,7 @@ function connectWebSocket() {
     }
 
     const host = window.location.host;
-    const wsUrl = `ws://${host}/ws/match/`;
+    const wsUrl = `wss://${host}/ws/match/`;
 
     websocket = new WebSocket(wsUrl);
 
@@ -156,11 +156,11 @@ function connectWebSocket() {
                 optionB = question['option_b']
                 optionC = question['option_c']
                 optionD = question['option_d']
-                questionTitle.innerHTML = title;
-                questionOptionA.innerHTML = optionA;
-                questionOptionB.innerHTML = optionB;
-                questionOptionC.innerHTML = optionC;
-                questionOptionD.innerHTML = optionD;
+                questionTitle.textContent = title;
+                questionOptionA.textContent = optionA;
+                questionOptionB.textContent = optionB;
+                questionOptionC.textContent = optionC;
+                questionOptionD.textContent = optionD;
                 adjustTitleFontSize("questionTitle");
                 adjustTitleFontSize("questionOptionA");
                 adjustTitleFontSize("questionOptionB");
