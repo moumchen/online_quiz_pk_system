@@ -73,7 +73,7 @@ channel_layer = get_channel_layer()
 
 async def handle_leave_room_request(consumer, user, room_id):
     """ handle leave room request """
-    logger.info(f"Received leave room request from user {user.username} in room {room_id}")
+    logger.info(logging.INFO, msg=f"Received leave room request from user {user.username} in room {room_id}")
     await leave_room_logic(consumer, user, voluntary_leave=True)  #  voluntary leave is a marker that user leave room by himself
 
 
@@ -197,17 +197,17 @@ async def leave_room_logic(consumer, user, voluntary_leave):
     user_room_cache_key = "user_room_cache_" + str(user.id)
     user_room_cache = cache.get(user_room_cache_key)
     if user_room_cache is None:
-        logger.warning(f"User {user.username} tried to leave room but no room cache found.")
+        logger.warning(msg=f"User {user.username} tried to leave room but no room cache found.")
         return
 
     room_channel_name = "room_channel_" + str(user_room_cache)
     room_info_key = "room_info_" + str(user_room_cache)
     room_info = cache.get(room_info_key)
     if room_info is None:
-        logger.warning(f"User {user.username} tried to leave room {user_room_cache} but no room info cache found.")
+        logger.warning(msg=f"User {user.username} tried to leave room {user_room_cache} but no room info cache found.")
         return
 
-    logger.info(
+    logger.info(logging.INFO, msg=
         f"User {user.username} leaving room {user_room_cache}. Voluntary leave: {voluntary_leave}, Owner: {room_info['room_owner']}, User is owner: {room_info['room_owner'] == user.id}")
 
     if user.id in room_info["room_users"]:
@@ -223,14 +223,14 @@ async def leave_room_logic(consumer, user, voluntary_leave):
                 cache.delete(room_info_key)  # delete the cache of room
                 await channel_layer.group_send(room_channel_name, {"type": "information", "sub_type": "owner_left_room",
                                                                    "message": "The room owner exited, so this room closed now."})  # notify all users
-                logger.info(f"Room owner {user.username} voluntarily left room {user_room_cache}, room closed.")
+                logger.info(logging.INFO, msg=f"Room owner {user.username} voluntarily left room {user_room_cache}, room closed.")
             else:  # user is owner and non-voluntary leave
                 await database_sync_to_async(Room.objects.filter(pk=room_info["room_id"]).update)(state=3)
                 cache.set(room_info_key, room_info, timeout=24 * 60 * 60 * 60)  # 更新房间缓存 (状态已修改)
                 await channel_layer.group_send(room_channel_name,
                                                {"type": "information", "sub_type": "owner_disconnected",
                                                 "message": "Room owner disconnected, room paused, waiting for owner to reconnect."})  # 通知其他用户
-                logger.info(
+                logger.info(logging.INFO, msg=
                     f"Room owner {user.username} involuntarily disconnected from room {room_info}, room paused, waiting for reconnect.")
         else:  # user is not owner
             if room_info["room_player_count"] <= 0:
@@ -240,12 +240,12 @@ async def leave_room_logic(consumer, user, voluntary_leave):
             await channel_layer.group_send(room_channel_name, {'type': 'information', 'sub_type': 'user_left_room',
                                                                'message': f'User {user.username} left the room!',
                                                                'room_id': user_room_cache})  # 通知其他用户
-            logger.info(f"User {user.username} left room {user_room_cache}.")
+            logger.info(logging.INFO, msg=f"User {user.username} left room {user_room_cache}.")
 
     cache.delete(user_room_cache_key)
-    logger.info(f"User-room cache for user {user.username} deleted.")
+    logger.info(logging.INFO, msg=f"User-room cache for user {user.username} deleted.")
     await channel_layer.group_discard(room_channel_name, consumer.channel_name)
-    logger.info(f"User {user.username}'s channel discarded from room {user_room_cache} channel group.")
+    logger.info(logging.INFO, msg=f"User {user.username}'s channel discarded from room {user_room_cache} channel group.")
 
 
 def join_room_by_invite_code(invite_code):
@@ -331,7 +331,7 @@ def adjust_permission(user, room_id, target_state):
 
 async def handle_disconnect(consumer, user):
     """ handle disconnect """
-    logger.info(f"WebSocket disconnect detected for user {user.username}, handling as non-voluntary leave.")
+    logger.info(logging.INFO, msg=f"WebSocket disconnect detected for user {user.username}, handling as non-voluntary leave.")
     await leave_room_logic(consumer, user, voluntary_leave=False)  #
 
 

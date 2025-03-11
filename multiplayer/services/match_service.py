@@ -45,7 +45,7 @@ async def join_in_the_match(consumer, user, match_id):
 
     message_payload = {"type": "information", "sub_type": "user_joined", "user_id": user.id, "username": user.username,
                        "message": f"User {user.username} joined the match."}
-    logger.log(f"send message user_joined to group: {match_channel_name}, content: {message_payload}")
+    logger.log(logging.INFO, msg=f"send message user_joined to group: {match_channel_name}, content: {message_payload}")
 
     #  notify other users in the match
     await channel_layer.group_send(
@@ -53,7 +53,7 @@ async def join_in_the_match(consumer, user, match_id):
         {"type": "information", "sub_type": "user_joined", "user_id": user.id, "username": user.username,
          "message": f"User {user.username} joined the match."}
     )
-    logger.log(f"send message user_joined to group: {match_channel_name}")
+    logger.log(logging.INFO, msg=f"send message user_joined to group: {match_channel_name}")
 
 
 async def generate_question(question):
