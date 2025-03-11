@@ -1,5 +1,9 @@
 # online_quiz_pk_system
-
+<center>
+  <img src="/readme/logo.png" alt="QuizQuiz" width="300px">
+  <br>
+  [An online example: www.quizquiz.fun](https://www.quizquiz.fun)
+</center>
 # Introduction
 
 This Python Django-based application provides an AI-driven quiz platform, offering both single-player and two-player (
