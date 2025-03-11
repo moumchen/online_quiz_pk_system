@@ -13,8 +13,17 @@
         <div class="container">
             <span class="owner">Room Owner: {{ room_owner }}</span>
             <span class="permission">Permission:
-                    <a class="permission-switch-link switch-to-public hidden " href="#" data-target-permission="public">Private > Switch to Public</a>
-                    <a class="permission-switch-link switch-to-private hidden" href="#" data-target-permission="private">Public > Switch to Private</a>
+                    <a class="permission-switch-link switch-to-public hidden " href="#" data-target-permission="public">Private
+                        {% if is_owner == 'True' %}
+                            > Switch to Public
+                        {% endif %}
+                    </a>
+                    <a class="permission-switch-link switch-to-private hidden" href="#"
+                       data-target-permission="private">Public >
+                        {% if is_owner == 'True' %}
+                            > Switch to Private
+                        {% endif %}
+                    </a>
             </span>
             <span class="question">Questions: {{ question }}</span>
             <span class="countdown">Time:
