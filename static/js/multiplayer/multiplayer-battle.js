@@ -57,7 +57,7 @@ function connectWebSocket() {
     }
 
     const host = window.location.host;
-    const wsUrl = `ws://${host}/ws/match/`;
+    const wsUrl = `wss://${host}/ws/match/`;
 
     websocket = new WebSocket(wsUrl);
 

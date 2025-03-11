@@ -170,7 +170,7 @@ function connectWebSocket() {
     }
 
     const host = window.location.host;
-    const wsUrl = `ws://${host}/ws/room/`;
+    const wsUrl = `wss://${host}/ws/room/`;
 
     websocket = new WebSocket(wsUrl);
 
