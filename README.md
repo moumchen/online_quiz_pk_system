@@ -1,9 +1,7 @@
 # online_quiz_pk_system
-<center>
-  <img src="/readme/logo.png" alt="QuizQuiz" width="300px">
-  <br>
-  [An online example: www.quizquiz.fun](https://www.quizquiz.fun)
-</center>
+![QuizQuiz](readme/logo.png)
+
+[An online example: www.quizquiz.fun](https://www.quizquiz.fun)
 
 # Introduction
 
