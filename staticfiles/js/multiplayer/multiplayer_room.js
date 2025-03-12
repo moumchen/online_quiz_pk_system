@@ -148,14 +148,15 @@ initializePermissionDisplay();
 
 let websocket;
 
+// connect to the websocket when the page is loaded
 document.addEventListener('DOMContentLoaded', () => {
     connectWebSocket();
 });
 
 
-let reconnecting = false; // 标记是否正在重连
-let reconnectionDelay = 1000; // 初始重连延迟 (毫秒)
-const maxReconnectionDelay = 30000; // 最大重连延迟 (毫秒)
+let reconnecting = false; // a marker to indicate whether it is reconnecting
+let reconnectionDelay = 1000; // initial reconnection delay (milliseconds)
+const maxReconnectionDelay = 30000; // maximum reconnection delay (30 seconds)
 let isPageUnloading = false;
 let isVoluntarilyLeaving = false;
 
@@ -164,7 +165,7 @@ window.onbeforeunload = function () {
 };
 
 function connectWebSocket() {
-    if (reconnecting) { // 如果正在重连，则直接返回，避免重复连接
+    if (reconnecting) { // if already reconnecting, skip
         console.log("Already reconnecting, skipping...");
         return;
     }
@@ -176,8 +177,8 @@ function connectWebSocket() {
 
     websocket.onopen = (event) => {
         console.log("WebSocket Connected");
-        reconnecting = false; // 重连成功，重置重连状态
-        reconnectionDelay = 1000; // 重置重连延迟
+        reconnecting = false; // reset reconnecting flag
+        reconnectionDelay = 1000; // reset reconnection delay
         // ------ try to join the room
         joinMessage = {"message_type": "join_room", "room_id": roomId}
         sendMessage(JSON.stringify(joinMessage));
@@ -201,13 +202,12 @@ function connectWebSocket() {
                 roomOpponent.value = message['joined_user_name'];
                 roomState.value = '1';
                 setRoomInfoByState();
-            } else if (sub_type === 'owner_disconnected') { // 新增 'owner_disconnected' 的处理逻辑
-                tips.innerHTML = "Room owner disconnected, room paused, waiting for owner to reconnect."; // 更新 tips 提示信息
-                tips.style.color = "orange"; // 可以修改 tips 的颜色，例如橙色，表示警告或等待状态
-                // 可以禁用一些操作按钮，例如 "开始游戏" 按钮，直到房主重连
+            } else if (sub_type === 'owner_disconnected') {
+                tips.innerHTML = "Room owner disconnected, room paused, waiting for owner to reconnect.";
+                tips.style.color = "orange";
                 const startATag = document.getElementsByClassName("start-a-tag")[0];
                 if (startATag) {
-                    startATag.classList.add("disabled"); // 添加 disabled class，或者使用其他方式禁用按钮
+                    startATag.classList.add("disabled");
                 }
             } else if (sub_type === "owner_left_room" && isOwner.value === 'False') {
                 alert(message['message'])
@@ -221,8 +221,8 @@ function connectWebSocket() {
     };
 
     websocket.onclose = (event) => {
-        if (!isVoluntarilyLeaving) { // 检查 isVoluntarilyLeaving 标志
-            if (!reconnecting && !isPageUnloading) { // 检查 isPageUnloading
+        if (!isVoluntarilyLeaving) { // check isVoluntarilyLeaving flag
+            if (!reconnecting && !isPageUnloading) { // check isPageUnloading
                 reconnecting = true;
                 console.log(`Attempting to reconnect in ${reconnectionDelay / 1000} seconds...`);
                 setTimeout(() => {
@@ -235,14 +235,14 @@ function connectWebSocket() {
             }
         } else {
             console.log("Voluntarily left room, skipping reconnection.");
-            isVoluntarilyLeaving = false; // 重置标志，以便下次进入房间时重连逻辑正常工作
+            isVoluntarilyLeaving = false; // reset the flag
         }
     };
 
     websocket.onerror = (event) => {
-        if (!isVoluntarilyLeaving) { // 检查 isVoluntarilyLeaving 标志
+        if (!isVoluntarilyLeaving) {
             console.error("WebSocket Error:", event);
-            if (!reconnecting && !isPageUnloading) { // 检查 isPageUnloading
+            if (!reconnecting && !isPageUnloading) {
                 reconnecting = true;
                 console.log(`Attempting to reconnect in ${reconnectionDelay / 1000} seconds...`);
                 setTimeout(() => {
@@ -254,7 +254,7 @@ function connectWebSocket() {
             }
         } else {
             console.log("Voluntarily left room, skipping reconnection on error as well.");
-            isVoluntarilyLeaving = false; // 重置标志
+            isVoluntarilyLeaving = false;
         }
     };
 }
@@ -265,21 +265,21 @@ function sendMessage(message) {
         console.log("Send Message:", message);
     } else {
         console.log("WebSocket Disconnected, cannot send message:", message);
-        // 可以选择在这里尝试立即重连，或者依赖 onclose/onerror 的重连机制
         if (!reconnecting) {
             console.log("Initiating reconnection from sendMessage due to disconnected state.");
-            connectWebSocket(); // 尝试立即重连
+            connectWebSocket(); // try to reconnect
         }
     }
 }
 
 
+// when the user clicks the "Quit" button, send a message to the server to leave the room
 document.getElementsByClassName('quit-a-tag')[0].addEventListener('click', () => {
     if (websocket && websocket.readyState === WebSocket.OPEN) {
-        isVoluntarilyLeaving = true; // 设置为 true，表示主动离开
+        isVoluntarilyLeaving = true; // if voluntarily leaving, set the flag
         const leaveMessage = {
-            "message_type": "leave_room_request", // 新的消息类型
-            "room_id": roomId // 假设 roomId 变量已定义
+            "message_type": "leave_room_request",
+            "room_id": roomId
         };
         sendMessage(JSON.stringify(leaveMessage));
         window.location.href = "/multiplayer/index";
@@ -289,6 +289,7 @@ document.getElementsByClassName('quit-a-tag')[0].addEventListener('click', () =>
     }
 });
 
+// when the user clicks the "Start" button, send a message to the server to start the game, and then redirect to the battle page
 document.getElementsByClassName("start-a-tag")[0].addEventListener('click', function () {
     // judge the current user is owner
     if (isOwner.value === 'True') {
