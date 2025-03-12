@@ -27,7 +27,13 @@ def generate_quiz_questions(topic, difficulty, num_questions):
     title = f"Quiz on {topic} - {difficulty} - {num_questions} Questions"
 
     # Construct the Prompt
-    prompt = f"Please generate {num_questions} questions about {topic} with {difficulty} difficulty. Each question should include 4 options (labeled A, B, C, D), with one correct answer, and a concise explanation of why that answer is correct. The format should be: {{\"questions\": [{{\"question_text\": \"Question 1 content\", \"options\": {{\"A\": \"Option 1\", \"B\": \"Option 2\", \"C\": \"Option 3\", \"D\": \"Option 4\"}}, \"correct_answer\": \"Correct answer content\", \"correct_answer_explanation\": \"Concise explanation of why the correct answer is correct\"}}, ... ]}}. Do not add any extra text or explanations. Give me plain text, not markdown format."
+    # prompt = f"Please generate {num_questions} questions about {topic} with {difficulty} difficulty. Each question should include 4 options (labeled A, B, C, D), with one correct answer, and a concise explanation of why that answer is correct. The format should be: {{\"questions\": [{{\"question_text\": \"Question 1 content\", \"options\": {{\"A\": \"Option 1\", \"B\": \"Option 2\", \"C\": \"Option 3\", \"D\": \"Option 4\"}}, \"correct_answer\": \"Correct answer content\", \"correct_answer_explanation\": \"Concise explanation of why the correct answer is correct\"}}, ... ]}}. Do not add any extra text or explanations. Give me plain text, not markdown format."
+    prompt = f"""
+    Instructions: Please generate {num_questions} questions about {topic} with {difficulty} difficulty. Each question should include 4 options (labeled A, B, C, D), with one correct answer, and a concise explanation of why that answer is correct.
+    Context: The questions are intended for a quiz system, and the target audience might be students or enthusiasts interested in the {topic} area.
+    Input data: The number of questions to generate is {num_questions}, and the topic is {topic} with a difficulty level of {difficulty}.
+    Output data: Provide the questions in the following JSON format: {{"questions": [{{"question_text": "Question 1 content", "options": {{"A": "Option 1", "B": "Option 2", "C": "Option 3", "D": "Option 4"}}, "correct_answer": "the right option(A or B or C or D)", "correct_answer_explanation": "Concise explanation of why the correct answer is correct"}}, ... ]}}. Do not add any extra text or explanations. Give me plain text, not markdown format.
+    """
 
     payload = {
         "model": "deepseek-chat",
@@ -47,6 +53,8 @@ def generate_quiz_questions(topic, difficulty, num_questions):
         response = requests.post(api_url, headers=headers, data=json.dumps(payload))
         response.raise_for_status()  # Check for HTTP errors
         response_data = response.json()
+        print("payload:" + json.dumps(payload))
+        print("response_data: ", response_data)
 
         # Parse the JSON data
         content = response_data['choices'][0]['message']['content']
