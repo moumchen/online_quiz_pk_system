@@ -129,14 +129,24 @@ submitButton.addEventListener('click', function () {
         }
     } else if (currentFormType === "register") {
         const email = emailInput.value;
-        if (username.trim() === "" || passwordReply.trim() === "" || email.trim() === "") {
-            alert('Your username or password or email is empty!');
-        } else {
-            document.getElementById("register-username").value = username;
-            document.getElementById("register-password").value = passwordReply;
-            document.getElementById("register-email").value = email;
-            document.getElementsByClassName("register-form")[0].submit();
+        if (email.trim() === '') {
+            alert("Your email is empty!");
+            return;
         }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('Your email format is not correct!');
+            return;
+
+        }
+        if (username.trim() === "" || passwordReply.trim() === "") {
+            alert('Your username or password is empty!');
+            return;
+        }
+        document.getElementById("register-username").value = username;
+        document.getElementById("register-password").value = passwordReply;
+        document.getElementById("register-email").value = email;
+        document.getElementsByClassName("register-form")[0].submit();
     }
 });
 
